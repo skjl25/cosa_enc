@@ -43,7 +43,7 @@
 #define SAVE_IMAGE              1
 #define printf_en               0
 
-#define mb_size                 32
+#define mb_size                 16
 #define max_mb_size             32
 
 #define DELIVERY_RATIO_NON_ROI  1.0

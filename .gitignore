@@ -42,3 +42,13 @@ cosa-enc/Release/main.obj
 cosa-enc/Release/rema.obj
 cosa-enc/Release/utility.obj
 cosa-enc/Release/vc120.pdb
+cosa-enc/Release/camera.nativecodeanalysis.xml
+cosa-enc/Release/cosa_common.nativecodeanalysis.xml
+cosa-enc/Release/cvideo.nativecodeanalysis.xml
+cosa-enc/Release/dct.nativecodeanalysis.xml
+cosa-enc/Release/dec_config.nativecodeanalysis.xml
+cosa-enc/Release/enc_config.nativecodeanalysis.xml
+cosa-enc/Release/img_tools.nativecodeanalysis.xml
+cosa-enc/Release/main.nativecodeanalysis.xml
+cosa-enc/Release/rema.nativecodeanalysis.xml
+cosa-enc/Release/utility.nativecodeanalysis.xml
