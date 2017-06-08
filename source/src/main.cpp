@@ -61,20 +61,17 @@ void_t main() {
   dec_mb = util.memset2DArray<int>(num_mb, mb_length);
 
 #if SAVE_IMAGE
-  cvSaveImage("./output/fdct_org.pgm", ipl_gray_img);
+  cvSaveImage(output_org_file_name, ipl_gray_img);
 #endif
 
   read_picture_data(ipl_gray_img, enc_mb);
   util.startTimer();
   double_t total_time = 0;
 
-  int cnt_zero = 0;
-
   for (uint32_t i = 0; i < num_mb; i++) {
     transform_img(dct_output, enc_mb[i], shift_1st, shift_2nd, mb_size);
     get_zigzag_array(zigzag_array, dct_output);
 
-    int non_zero_flag = non_zero_check(dct_output, mb_size);
     int min = find_min(zigzag_array, mb_size);
     int max = find_max(zigzag_array, mb_size);
     double_t reduceRatio = (double_t)(abs(min) + max) / 255;
@@ -82,6 +79,8 @@ void_t main() {
 
 
 #if printf_en
+    int non_zero_flag = non_zero_check(dct_output, mb_size);
+
     for (int k = 0; k < mb_size; k++) {
       for (int l = 0; l < mb_size; l++) {
         printf("%d ", zigzag_array[l + k*mb_size]);
@@ -180,7 +179,7 @@ void_t main() {
 
   recon_picture_data(ipl_rec_img, dec_mb);
 
-  printf("Count zeros: %d\n", cnt_zero);
+  //printf("Count zeros: %d\n", cnt_zero);
   double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
                                             (uint8_t*)ipl_gray_img->imageData,
                                             ipl_gray_img->width,

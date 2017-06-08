@@ -20,6 +20,9 @@
 #define image_sequence          130
 
 #define input_file_name "./input/1920x1024_test.jpg"
+
+#define output_org_file_name "./output/fdct_org.pgm"
+
 // #define input_file_name "./input/fhd_test_10.jpg"
 // #define input_file_name "./input/fhd_test_9.jpg"
 // #define input_file_name "./input/fhd_test_8.jpg"
@@ -43,7 +46,7 @@
 #define SAVE_IMAGE              1
 #define printf_en               0
 
-#define mb_size                 16
+#define mb_size                 4
 #define max_mb_size             32
 
 #define DELIVERY_RATIO_NON_ROI  1.0
