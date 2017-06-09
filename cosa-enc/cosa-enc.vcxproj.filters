@@ -18,12 +18,6 @@
     <ClCompile Include="..\source\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\src\utility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\src\camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\src\cvideo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -33,9 +27,6 @@
     <ClCompile Include="..\source\src\rema.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\src\img_tools.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\src\enc_config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -43,6 +34,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\source\src\cosa_common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utility\src\img_tools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utility\src\utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utility\src\camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,12 +56,6 @@
     <ClInclude Include="..\source\inc\mat4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\inc\typedef.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\inc\utility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\inc\vec2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -69,9 +63,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\inc\vec4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\inc\camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\inc\cvideo.h">
@@ -86,9 +77,6 @@
     <ClInclude Include="..\source\inc\rema.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\inc\img_tools.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\inc\enc_config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -96,6 +84,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\inc\cosa_common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utility\inc\utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utility\inc\camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utility\inc\img_tools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utility\inc\typedef.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -38,6 +38,10 @@ DEALINGS IN THE SOFTWARE.
 #include <iostream>
 #include <assert.h>
 #include <limits>
+#include "../../../utility/inc/utility.h"
+#include "../../../utility/inc/img_tools.h"
+#include "../../../utility/inc/typedef.h"
+
 
 #define ROUND( a )            ( ( (a) < 0 ) ? (int) ( (a) - 0.5 ) : \
                       		      (int) ( (a) + 0.5 ) )

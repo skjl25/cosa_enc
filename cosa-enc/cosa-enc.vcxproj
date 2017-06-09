@@ -76,7 +76,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\libraries\opencv\build\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projects\utility\inc;D:\libraries\opencv\build\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -88,32 +88,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\source\src\camera.cpp" />
+    <ClCompile Include="..\..\utility\src\camera.cpp" />
+    <ClCompile Include="..\..\utility\src\img_tools.cpp" />
+    <ClCompile Include="..\..\utility\src\utility.cpp" />
     <ClCompile Include="..\source\src\cosa_common.cpp" />
     <ClCompile Include="..\source\src\cvideo.cpp" />
     <ClCompile Include="..\source\src\dct.cpp" />
     <ClCompile Include="..\source\src\dec_config.cpp" />
     <ClCompile Include="..\source\src\enc_config.cpp" />
-    <ClCompile Include="..\source\src\img_tools.cpp" />
     <ClCompile Include="..\source\src\rema.cpp" />
     <ClCompile Include="..\source\src\main.cpp" />
-    <ClCompile Include="..\source\src\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\source\inc\camera.h" />
+    <ClInclude Include="..\..\utility\inc\camera.h" />
+    <ClInclude Include="..\..\utility\inc\img_tools.h" />
+    <ClInclude Include="..\..\utility\inc\typedef.h" />
+    <ClInclude Include="..\..\utility\inc\utility.h" />
     <ClInclude Include="..\source\inc\cosa_common.h" />
     <ClInclude Include="..\source\inc\cvideo.h" />
     <ClInclude Include="..\source\inc\dct.h" />
     <ClInclude Include="..\source\inc\dec_config.h" />
     <ClInclude Include="..\source\inc\enc_config.h" />
     <ClInclude Include="..\source\inc\global.h" />
-    <ClInclude Include="..\source\inc\img_tools.h" />
     <ClInclude Include="..\source\inc\rema.h" />
     <ClInclude Include="..\source\inc\mat2.h" />
     <ClInclude Include="..\source\inc\mat3.h" />
     <ClInclude Include="..\source\inc\mat4.h" />
-    <ClInclude Include="..\source\inc\typedef.h" />
-    <ClInclude Include="..\source\inc\utility.h" />
     <ClInclude Include="..\source\inc\vec2.h" />
     <ClInclude Include="..\source\inc\vec3.h" />
     <ClInclude Include="..\source\inc\vec4.h" />

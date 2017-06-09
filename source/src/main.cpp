@@ -25,10 +25,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include "../inc/global.h"
 #include "../inc/cvideo.h"
-#include "../inc/utility.h"
-#include "../inc/img_tools.h"
 #include "../inc/dct.h"
-#include "../inc/typedef.h"
 #include "../inc/enc_config.h"
 #include "../inc/dec_config.h"
 #include "../inc/cosa_common.h"

@@ -37,9 +37,7 @@ DEALINGS IN THE SOFTWARE.
 #include <vector>
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
-#include "utility.h"
 #include "global.h"
-#include "typedef.h"
 
 using namespace std;
 
