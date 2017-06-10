@@ -43,7 +43,8 @@ void_t recon_picture_data(IplImage* ipl_dec_img, int** dec_mb) {
 }
 
 
-void_t inv_transform_img(int* dst, int* src, int shift_1st, int shift_2nd, int tu_size) {
+void_t inv_transform_img(int* dst, int* src, int shift_1st, int shift_2nd,
+                         int tu_size) {
   int coef_inv [max_mb_size *max_mb_size];
 
   if(tu_size == 4) {
@@ -65,7 +66,8 @@ void_t inv_transform_img(int* dst, int* src, int shift_1st, int shift_2nd, int t
 
 }
 
-void_t dequantize(int* src, double_t reduce_ratio, double_t intermediate_val, int tu_size) {
+void_t dequantize(int* src, double_t reduce_ratio, double_t intermediate_val,
+                  int tu_size) {
   for (int j = 0; j < mb_size*mb_size; j++) {
     double_t restoredVal = (double_t)(src[j] - intermediate_val)*reduce_ratio;
     //dataVectorTest.push_back(restoredVal);

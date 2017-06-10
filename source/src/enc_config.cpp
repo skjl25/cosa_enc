@@ -65,7 +65,8 @@ void_t transform_img(int* dst, int* src, int shift_1st, int shift_2nd, int tu_si
   }
 }
 
-void_t quantize(int* src, double_t reduce_ratio, double_t intermediate_val, int tu_size) {
+void_t quantize(int* src, double_t reduce_ratio, double_t intermediate_val,
+                int tu_size) {
   for (int j = 0; j < mb_size*mb_size; j++) {
     src[j] = (int(src[j] / reduce_ratio + intermediate_val));
   }
