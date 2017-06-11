@@ -28,13 +28,16 @@ DEALINGS IN THE SOFTWARE.
 
 #include "global.h"
 #include "typedef.h"
-#include "../inc/dct.h"
+#include "dct.h"
+#include "cosa_common.h"
 
 void_t read_picture_data(IplImage* ipl_src_img, int** enc_mb);
 
 void_t transform_img(int* dst, int* src, int shift_1st, int shift_2nd, int tu_size);
 
-void_t quantize(int* src, double_t reduce_ratio, double_t intermediate_val, int tu_size);
+void_t get_quantize_parameter(int* src, quantize_param* qp_param);
+
+void_t quantize(int* src, quantize_param qp_param, int tu_size) ;
 
 
 #endif /* ENC_CONIFG_H_ */

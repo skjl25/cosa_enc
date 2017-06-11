@@ -30,7 +30,10 @@ DEALINGS IN THE SOFTWARE.
 #include "global.h"
 #include "typedef.h"
 
-
+struct quantize_param{
+  double_t reduce_ratio;
+  double_t intermediate_val;
+};
 
 int non_zero_check(int* src, int blk_size);
 int find_max(int* src, int blk_size);

@@ -87,21 +87,24 @@ void_t main() {
 #endif
 
   read_picture_data(ipl_gray_img, enc_mb);
-  util.startTimer();
   double_t total_time = 0;
+  quantize_param qp_param;
+  qp_param.intermediate_val = 0;
+  qp_param.reduce_ratio = 0;
+
+  util.startTimer();
 
   for (uint32_t i = 0; i < num_mb; i++) {
     transform_img(dct_output, enc_mb[i], shift_1st, shift_2nd, mb_size);
     get_zigzag_array(zigzag_array, dct_output);
 
-    int min = find_min(zigzag_array, mb_size);
-    int max = find_max(zigzag_array, mb_size);
-    double_t reduceRatio = (double_t)(abs(min) + max) / 255;
-    double_t intermediateVal = abs(min) / reduceRatio;
+    get_quantize_parameter(zigzag_array, &qp_param);
+    quantize(zigzag_array, qp_param, mb_size);
 
-
+    ///////////////////////////////////////////////////////////////////////////
 #if printf_en
     int non_zero_flag = non_zero_check(dct_output, mb_size);
+
 
     for (int k = 0; k < mb_size; k++) {
       for (int l = 0; l < mb_size; l++) {
@@ -111,9 +114,7 @@ void_t main() {
     }
     printf("---------------------\n");
 #endif
-    quantize(zigzag_array, reduceRatio, intermediateVal, mb_size);
 
-    ///////////////////////////////////////////////////////////////////////////
 #if printf_en
     for (int k = 0; k < mb_size; k++) {
       for (int l = 0; l < mb_size; l++) {
@@ -192,7 +193,7 @@ void_t main() {
     //Maybe add secondary transformation to place more coefficients to the left top to prevent futher degradation
     //Utilize 4x4 as a tx for roi
 
-    dequantize(zigzag_array, reduceRatio, intermediateVal, mb_size);
+    dequantize(zigzag_array, qp_param, mb_size);
     get_izigzag_array(izigzag_array, zigzag_array);
     inv_transform_img(dec_mb[i], (int*)izigzag_array, shift_1st_inv, shift_2nd_inv, mb_size);
   }
@@ -207,11 +208,13 @@ void_t main() {
                                             ipl_gray_img->width,
                                             ipl_gray_img->height);
   printf("PSNR is %f\n", psnr);
-  getchar();
+
 
 #if SAVE_IMAGE
   cvSaveImage("./output/fdct_result.pgm", ipl_rec_img);
 #endif
+
+  getchar();
 
 #if 0
   ///////////////
