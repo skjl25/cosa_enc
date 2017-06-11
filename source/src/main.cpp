@@ -107,9 +107,9 @@ void_t main() {
     get_quantize_parameter(zigzag_array, &qp_param);
     quantize(zigzag_array, qp_param, mb_size);
 
-    ///////////////////////////////////////////////////////////////////////////
     int non_zero_val = check_zero_by_partition_block(zigzag_array, mb_size);
 
+    ///////////////////////////////////////////////////////////////////////////
 
 #if printf_en
     for (int k = 0; k < mb_size; k++) {
