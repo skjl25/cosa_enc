@@ -79,6 +79,12 @@ void_t quantize(int* src, quantize_param qp_param, int tu_size) {
   }
 }
 
+void_t init_encoder(IplImage* src_img, int** enc_mb, quantize_param* qp_param) {
+  read_picture_data(src_img, enc_mb);
+  qp_param->intermediate_val = 0;
+  qp_param->reduce_ratio = 0;
+}
+
 int* encode_blk() {
   return 0;
 }

@@ -35,7 +35,12 @@ struct quantize_param{
   double_t intermediate_val;
 };
 
-int non_zero_check(int* src, int blk_size);
+int check_non_zero_all_block(int* src, int blk_size);
+int check_non_zero_quarter_block(int* src, int blk_size);
+int check_non_zero_half_block(int* src, int blk_size);
+int check_zero_by_partition_block(int* src, int blk_size);
+
+
 int find_max(int* src, int blk_size);
 int find_min(int* src, int blk_size);
 

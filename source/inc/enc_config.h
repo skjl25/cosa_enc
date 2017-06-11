@@ -39,5 +39,6 @@ void_t get_quantize_parameter(int* src, quantize_param* qp_param);
 
 void_t quantize(int* src, quantize_param qp_param, int tu_size) ;
 
+void_t init_encoder(IplImage* src_img, int** enc_mb, quantize_param* qp_param);
 
 #endif /* ENC_CONIFG_H_ */

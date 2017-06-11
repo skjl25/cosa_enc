@@ -35,7 +35,7 @@ using namespace std;
 Utility util;
 ImageTools image_tool;
 
-
+#define RUN_INFINITE 1
 void_t main() {
   IplImage* ipl_rec_img = 0;
   IplImage* ipl_gray_img = 0;
@@ -74,24 +74,30 @@ void_t main() {
   ipl_rec_img = cvCreateImage(cvSize(ipl_org_img->width, ipl_org_img->height), IPL_DEPTH_8U, 1);
   cvCvtColor(ipl_org_img, ipl_gray_img, CV_RGB2GRAY);
 
+#if SAVE_IMAGE
+  cvSaveImage(output_org_file_name, ipl_gray_img);
+#endif
+
   uint32_t org_img_w = ipl_org_img->width;
   uint32_t org_img_h = ipl_org_img->height;
   uint32_t num_mb = (org_img_h / mb_size)*(org_img_w / mb_size);
   uint32_t mb_length = mb_size * mb_size;
 
+  int cnt_non_zero_all_block = 0;
+  int cnt_non_zero_half_block = 0;
+  int cnt_non_zero_one_quarter_block = 0;
+  int cnt_all_coeff_block = 0;
+
   enc_mb = util.memset2DArray<int>(num_mb, mb_length);
   dec_mb = util.memset2DArray<int>(num_mb, mb_length);
 
-#if SAVE_IMAGE
-  cvSaveImage(output_org_file_name, ipl_gray_img);
-#endif
-
-  read_picture_data(ipl_gray_img, enc_mb);
-  double_t total_time = 0;
   quantize_param qp_param;
-  qp_param.intermediate_val = 0;
-  qp_param.reduce_ratio = 0;
 
+  init_encoder(ipl_gray_img, enc_mb, &qp_param);
+
+#if RUN_INFINITE
+  while(1){
+#endif
   util.startTimer();
 
   for (uint32_t i = 0; i < num_mb; i++) {
@@ -102,18 +108,8 @@ void_t main() {
     quantize(zigzag_array, qp_param, mb_size);
 
     ///////////////////////////////////////////////////////////////////////////
-#if printf_en
-    int non_zero_flag = non_zero_check(dct_output, mb_size);
+    int non_zero_val = check_zero_by_partition_block(zigzag_array, mb_size);
 
-
-    for (int k = 0; k < mb_size; k++) {
-      for (int l = 0; l < mb_size; l++) {
-        printf("%d ", zigzag_array[l + k*mb_size]);
-      }
-      printf("\n");
-    }
-    printf("---------------------\n");
-#endif
 
 #if printf_en
     for (int k = 0; k < mb_size; k++) {
@@ -154,10 +150,7 @@ void_t main() {
     }
 
     most_freq_coef=zigzag_array[max_coef_idx];
-#endif
 
-
-#if printf_en
     for(int k=0;k<mb_size;k++) {
       for (int l = 0; l < mb_size;l++) {
         printf("%d ",cnt_freq_coef_array[l+k*mb_size]);
@@ -165,10 +158,7 @@ void_t main() {
       printf("\n");
     }
     printf("---------------------\n");
-#endif
 
-
-#if printf_en
     for (int k = 0; k < mb_size; k++) {
       for (int l = 0; l < mb_size; l++) {
         printf("%d ", cnt_freq_coef_array_temp[l + k*mb_size]);
@@ -209,11 +199,20 @@ void_t main() {
                                             ipl_gray_img->height);
   printf("PSNR is %f\n", psnr);
 
+#if printf_en
+  printf("# of non zero all block : %d / %d\n",cnt_all_coeff_block, num_mb);
+  printf("# of all zero all block : %d / %d\n",cnt_non_zero_all_block, num_mb);
+  printf("# of zero half block : %d / %d\n",cnt_non_zero_half_block, num_mb);
+  printf("# of zero one quarter block : %d / %d\n",cnt_non_zero_one_quarter_block, num_mb);
+#endif
 
 #if SAVE_IMAGE
   cvSaveImage("./output/fdct_result.pgm", ipl_rec_img);
 #endif
 
+#if RUN_INFINITE
+  }
+#endif
   getchar();
 
 #if 0
