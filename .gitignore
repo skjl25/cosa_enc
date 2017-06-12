@@ -56,3 +56,8 @@ cosa-enc.psess
 cosa-enc170608.vspx
 Performance1.psess
 Performance2.psess
+*.pdb
+Debug/
+Release/
+*.suo
+packages/
