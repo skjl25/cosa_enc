@@ -27,9 +27,9 @@ DEALINGS IN THE SOFTWARE.
 
 int find_max(int* src, int blk_size) {
   int max = src[0];
-  for(int i=0; i < blk_size*blk_size; i++) {
+  for (int i = 0; i < blk_size*blk_size; i++) {
     if (src[i] > max) {
-        max = src[i];
+      max = src[i];
     }
   }
   return max;
@@ -37,9 +37,9 @@ int find_max(int* src, int blk_size) {
 
 int find_min(int* src, int blk_size) {
   int min = src[0];
-  for(int i=0; i < blk_size*blk_size; i++) {
+  for (int i = 0; i < blk_size*blk_size; i++) {
     if (src[i] < min) {
-        min = src[i];
+      min = src[i];
     }
   }
   return min;
@@ -62,7 +62,7 @@ int check_non_zero_all_block(int* src, int blk_size) {
 int check_non_zero_quarter_block(int* src, int blk_size) {
   int non_zero_flag = 0;
 
-  for (int j = blk_size-1; j < blk_size*blk_size; j++) {
+  for (int j = blk_size - 1; j < blk_size*blk_size; j++) {
     if (src[j] != 0) {
       non_zero_flag = 1;
       return non_zero_flag;
@@ -74,7 +74,7 @@ int check_non_zero_quarter_block(int* src, int blk_size) {
 int check_non_zero_half_block(int* src, int blk_size) {
   int non_zero_flag = 0;
 
-  for (int j = (blk_size*2)-1; j < blk_size*blk_size; j++) {
+  for (int j = (blk_size * 2) - 1; j < blk_size*blk_size; j++) {
     if (src[j] != 0) {
       non_zero_flag = 1;
       return non_zero_flag;
@@ -95,7 +95,6 @@ int check_zero_by_partition_block(int* src, int blk_size) {
     return 0;
   } else {
     int non_zero_one_quarter_flag = check_non_zero_quarter_block(src, mb_size);
-
     if (non_zero_one_quarter_flag == 0) {
       return 1;
     } else {
@@ -108,4 +107,20 @@ int check_zero_by_partition_block(int* src, int blk_size) {
       }
     }
   }
+}
+
+int get_size_of_mb_block(int* src, int blk_size) {
+  int non_zero_flag_val = 0;
+  non_zero_flag_val = check_zero_by_partition_block(src, blk_size);
+
+  if (non_zero_flag_val == 0) {
+    return 0;
+  } else if (non_zero_flag_val == 1) {
+    return blk_size;
+  }else if(non_zero_flag_val == 2) {
+    return (blk_size*blk_size)/2;
+  }else {
+    return blk_size*blk_size;
+  }
+
 }

@@ -107,7 +107,9 @@ void_t main() {
     get_quantize_parameter(zigzag_array, &qp_param);
     quantize(zigzag_array, qp_param, mb_size);
 
-    int non_zero_val = check_zero_by_partition_block(zigzag_array, mb_size);
+    int size_mb_blk = get_size_of_mb_block(zigzag_array, mb_size);
+
+    printf("%d\n", size_mb_blk);
 
     ///////////////////////////////////////////////////////////////////////////
 
