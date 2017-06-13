@@ -43,29 +43,36 @@ void_t read_picture_data(IplImage* ipl_src_img, int** enc_mb) {
   }
 }
 
-void_t transform_img(int* dst, int* src, int shift_1st, int shift_2nd, int tu_size) {
+void_t transform_img(int* dst, int* src, int tu_size) {
   //int* coef = (int*)malloc(sizeof(int) * mb_size * mb_size);
-  int coef [max_mb_size *max_mb_size];
+  int coef[max_mb_size *max_mb_size];
+  int shift_1st = 0;
+  int shift_2nd = 0;
 
-  if(tu_size == 4) {
-    get_dct4_hevc(coef, src, shift_1st, mb_size);
-    get_dct4_hevc(dst, coef, shift_2nd, mb_size);
-  }
-  else if (tu_size == 8) {
-    get_dct8_hevc(coef, src, shift_1st, mb_size);
-    get_dct8_hevc(dst, coef, shift_2nd, mb_size);
-  }
-  else if (tu_size == 16) {
-    get_dct16_hevc(coef, src, shift_1st, mb_size);
-    get_dct16_hevc(dst, coef, shift_2nd, mb_size);
-  }
-  else if (tu_size == 32) {
-    get_dct32_hevc(coef, src, shift_1st, mb_size);
-    get_dct32_hevc(dst, coef, shift_2nd, mb_size);
+  if (tu_size == 4) {
+    shift_1st = 1 + X265_DEPTH - 8;
+    shift_2nd = 8;
+    get_dct4_hevc(coef, src, shift_1st, tu_size);
+    get_dct4_hevc(dst, coef, shift_2nd, tu_size);
+  } else if (tu_size == 8) {
+    shift_1st = 2 + X265_DEPTH - 8;
+    shift_2nd = 9;
+    get_dct8_hevc(coef, src, shift_1st, tu_size);
+    get_dct8_hevc(dst, coef, shift_2nd, tu_size);
+  } else if (tu_size == 16) {
+    shift_1st = 3 + X265_DEPTH - 8;
+    shift_2nd = 10;
+    get_dct16_hevc(coef, src, shift_1st, tu_size);
+    get_dct16_hevc(dst, coef, shift_2nd, tu_size);
+  } else if (tu_size == 32) {
+    shift_1st = 4 + X265_DEPTH - 8;
+    shift_2nd = 11;
+    get_dct32_hevc(coef, src, shift_1st, tu_size);
+    get_dct32_hevc(dst, coef, shift_2nd, tu_size);
   }
 }
 
-void_t get_quantize_parameter(int* src, quantize_param* qp_param){
+void_t get_quantize_parameter(int* src, quantize_param* qp_param) {
   int min = find_min(src, mb_size);
   int max = find_max(src, mb_size);
 
@@ -74,7 +81,7 @@ void_t get_quantize_parameter(int* src, quantize_param* qp_param){
 }
 
 void_t quantize(int* src, quantize_param qp_param, int tu_size) {
-  for (int j = 0; j < mb_size*mb_size; j++) {
+  for (int j = 0; j < tu_size*tu_size; j++) {
     src[j] = (int(src[j] / qp_param.reduce_ratio + qp_param.intermediate_val));
   }
 }

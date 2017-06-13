@@ -35,13 +35,20 @@ struct quantize_param{
   double_t intermediate_val;
 };
 
+struct enc_param{
+  int tu_size;
+  int tu_cnt;
+  quantize_param qp_param;
+};
+
+int find_max(int* src, int blk_size);
+int find_min(int* src, int blk_size);
+
 int check_non_zero_all_block(int* src, int blk_size);
 int check_non_zero_quarter_block(int* src, int blk_size);
 int check_non_zero_half_block(int* src, int blk_size);
 int check_zero_by_partition_block(int* src, int blk_size);
 int get_size_of_mb_block(int* src, int blk_size);
 
-int find_max(int* src, int blk_size);
-int find_min(int* src, int blk_size);
 
 #endif /* COSA_COMMON_H_ */

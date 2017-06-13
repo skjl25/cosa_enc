@@ -43,31 +43,30 @@ void_t recon_picture_data(IplImage* ipl_dec_img, int** dec_mb) {
 }
 
 
-void_t inv_transform_img(int* dst, int* src, int shift_1st, int shift_2nd,
-                         int tu_size) {
-  int coef_inv [max_mb_size *max_mb_size];
+void_t inv_transform_img(int* dst, int* src, int tu_size) {
+  int coef_inv[max_mb_size *max_mb_size];
 
-  if(tu_size == 4) {
-    get_idct4_hevc(coef_inv, src, shift_1st, mb_size);
-    get_idct4_hevc(dst, coef_inv, shift_2nd, mb_size);
-  }
-  else if (tu_size == 8) {
-    get_idct8_hevc(coef_inv, src, shift_1st, mb_size);
-    get_idct8_hevc(dst, coef_inv, shift_2nd, mb_size);
-  }
-  else if (tu_size == 16) {
-    get_idct16_hevc(coef_inv, src, shift_1st, mb_size);
-    get_idct16_hevc(dst, coef_inv, shift_2nd, mb_size);
-  }
-  else if (tu_size == 32) {
-    get_idct32_hevc(coef_inv, src, shift_1st, mb_size);
-    get_idct32_hevc(dst, coef_inv, shift_2nd, mb_size);
+  int shift_1st = 7;
+  int shift_2nd = 12 - (X265_DEPTH - 8);;
+
+  if (tu_size == 4) {
+    get_idct4_hevc(coef_inv, src, shift_1st, tu_size);
+    get_idct4_hevc(dst, coef_inv, shift_2nd, tu_size);
+  } else if (tu_size == 8) {
+    get_idct8_hevc(coef_inv, src, shift_1st, tu_size);
+    get_idct8_hevc(dst, coef_inv, shift_2nd, tu_size);
+  } else if (tu_size == 16) {
+    get_idct16_hevc(coef_inv, src, shift_1st, tu_size);
+    get_idct16_hevc(dst, coef_inv, shift_2nd, tu_size);
+  } else if (tu_size == 32) {
+    get_idct32_hevc(coef_inv, src, shift_1st, tu_size);
+    get_idct32_hevc(dst, coef_inv, shift_2nd, tu_size);
   }
 
 }
 
 void_t dequantize(int* src, quantize_param qp_param, int tu_size) {
-  for (int j = 0; j < mb_size*mb_size; j++) {
+  for (int j = 0; j < tu_size*tu_size; j++) {
     double_t restoredVal = (double_t)(src[j] - qp_param.intermediate_val)*qp_param.reduce_ratio;
     //dataVectorTest.push_back(restoredVal);
     src[j] = (int)restoredVal;

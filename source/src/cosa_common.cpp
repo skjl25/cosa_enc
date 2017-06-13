@@ -117,9 +117,9 @@ int get_size_of_mb_block(int* src, int blk_size) {
     return 0;
   } else if (non_zero_flag_val == 1) {
     return blk_size;
-  }else if(non_zero_flag_val == 2) {
-    return (blk_size*blk_size)/2;
-  }else {
+  } else if (non_zero_flag_val == 2) {
+    return (blk_size*blk_size) / 2;
+  } else {
     return blk_size*blk_size;
   }
 

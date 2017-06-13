@@ -33,7 +33,7 @@ DEALINGS IN THE SOFTWARE.
 
 void_t read_picture_data(IplImage* ipl_src_img, int** enc_mb);
 
-void_t transform_img(int* dst, int* src, int shift_1st, int shift_2nd, int tu_size);
+void_t transform_img(int* dst, int* src, int tu_size);
 
 void_t get_quantize_parameter(int* src, quantize_param* qp_param);
 

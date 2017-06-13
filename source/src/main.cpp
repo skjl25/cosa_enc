@@ -40,8 +40,6 @@ void_t main() {
   IplImage* ipl_rec_img = 0;
   IplImage* ipl_gray_img = 0;
   IplImage* ipl_org_img = 0;
-  const int shift_1st_inv = 7;
-  const int shift_2nd_inv = 12 - (X265_DEPTH - 8);
 
   int dct_output[max_mb_size *max_mb_size];
   int zigzag_array[max_mb_size *max_mb_size];
@@ -49,25 +47,6 @@ void_t main() {
 
   int** enc_mb;
   int** dec_mb;
-
-#if mb_size==4
-  const int shift_1st = 1 + X265_DEPTH - 8;
-  const int shift_2nd = 8;
-#endif
-#if mb_size==8
-  const uint32_t shift_1st = 2 + X265_DEPTH - 8;
-  const uint32_t shift_2nd = 9;
-#endif
-
-#if mb_size==16
-  const uint32_t shift_1st = 3 + X265_DEPTH - 8;
-  const uint32_t shift_2nd = 10;
-#endif
-
-#if mb_size==32
-  const uint32_t shift_1st = 4 + X265_DEPTH - 8;
-  const uint32_t shift_2nd = 11;
-#endif
 
   ipl_org_img = cvLoadImage(input_file_name, 1);
   ipl_gray_img = cvCreateImage(cvSize(ipl_org_img->width, ipl_org_img->height), IPL_DEPTH_8U, 1);
@@ -83,11 +62,6 @@ void_t main() {
   uint32_t num_mb = (org_img_h / mb_size)*(org_img_w / mb_size);
   uint32_t mb_length = mb_size * mb_size;
 
-  int cnt_non_zero_all_block = 0;
-  int cnt_non_zero_half_block = 0;
-  int cnt_non_zero_one_quarter_block = 0;
-  int cnt_all_coeff_block = 0;
-
   enc_mb = util.memset2DArray<int>(num_mb, mb_length);
   dec_mb = util.memset2DArray<int>(num_mb, mb_length);
 
@@ -101,7 +75,7 @@ void_t main() {
   util.startTimer();
 
   for (uint32_t i = 0; i < num_mb; i++) {
-    transform_img(dct_output, enc_mb[i], shift_1st, shift_2nd, mb_size);
+    transform_img(dct_output, enc_mb[i], mb_size);
     get_zigzag_array(zigzag_array, dct_output);
 
     get_quantize_parameter(zigzag_array, &qp_param);
@@ -109,7 +83,7 @@ void_t main() {
 
     int size_mb_blk = get_size_of_mb_block(zigzag_array, mb_size);
 
-    printf("%d\n", size_mb_blk);
+    //printf("%d\n", size_mb_blk);
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -187,26 +161,18 @@ void_t main() {
 
     dequantize(zigzag_array, qp_param, mb_size);
     get_izigzag_array(izigzag_array, zigzag_array);
-    inv_transform_img(dec_mb[i], (int*)izigzag_array, shift_1st_inv, shift_2nd_inv, mb_size);
+    inv_transform_img(dec_mb[i], (int*)izigzag_array, mb_size);
   }
 
   util.getElapsedTime();
 
   recon_picture_data(ipl_rec_img, dec_mb);
 
-  //printf("Count zeros: %d\n", cnt_zero);
   double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
                                             (uint8_t*)ipl_gray_img->imageData,
                                             ipl_gray_img->width,
                                             ipl_gray_img->height);
   printf("PSNR is %f\n", psnr);
-
-#if printf_en
-  printf("# of non zero all block : %d / %d\n",cnt_all_coeff_block, num_mb);
-  printf("# of all zero all block : %d / %d\n",cnt_non_zero_all_block, num_mb);
-  printf("# of zero half block : %d / %d\n",cnt_non_zero_half_block, num_mb);
-  printf("# of zero one quarter block : %d / %d\n",cnt_non_zero_one_quarter_block, num_mb);
-#endif
 
 #if SAVE_IMAGE
   cvSaveImage("./output/fdct_result.pgm", ipl_rec_img);
