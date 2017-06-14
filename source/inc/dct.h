@@ -27,7 +27,6 @@ DEALINGS IN THE SOFTWARE.
 #define DCT_H_
 
 #include "global.h"
-#include "typedef.h"
 
 template <typename T> inline T Clip3(const T minVal, const T maxVal, const T a) {
   return std::min<T>(std::max<T>(minVal, a), maxVal);

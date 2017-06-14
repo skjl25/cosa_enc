@@ -26,16 +26,16 @@ DEALINGS IN THE SOFTWARE.
 
 #include "../inc/enc_config.h"
 
-void_t read_picture_data(IplImage* ipl_src_img, int** enc_mb) {
+void_t read_picture_data(IplImage* ipl_src_img, int** enc_mb, int tu_size) {
   uint32_t mb_idx = 0;
   uint32_t src_offset = ipl_src_img->widthStep;
   char* src_img = ipl_src_img->imageData;
 
-  for (int j = 0; j < ipl_src_img->height; j += mb_size) {
-    for (int i = 0; i < ipl_src_img->width; i += mb_size) {
-      for (int k = 0; k < mb_size; k++) {
-        for (int l = 0; l < mb_size; l++) {
-          enc_mb[mb_idx][k * mb_size + l] = src_img[(src_offset * (j + k)) + (i + l)];
+  for (int j = 0; j < ipl_src_img->height; j += tu_size) {
+    for (int i = 0; i < ipl_src_img->width; i += tu_size) {
+      for (int k = 0; k < tu_size; k++) {
+        for (int l = 0; l < tu_size; l++) {
+          enc_mb[mb_idx][k * tu_size + l] = src_img[(src_offset * (j + k)) + (i + l)];
         }
       }
       mb_idx++;
@@ -72,9 +72,9 @@ void_t transform_img(int* dst, int* src, int tu_size) {
   }
 }
 
-void_t get_quantize_parameter(int* src, quantize_param* qp_param) {
-  int min = find_min(src, mb_size);
-  int max = find_max(src, mb_size);
+void_t get_quantize_parameter(int* src, quantize_param* qp_param, int tu_size) {
+  int min = find_min(src, tu_size);
+  int max = find_max(src, tu_size);
 
   qp_param->reduce_ratio = (double_t)(abs(min) + max) / 255;
   qp_param->intermediate_val = abs(min) / qp_param->reduce_ratio;
@@ -86,11 +86,21 @@ void_t quantize(int* src, quantize_param qp_param, int tu_size) {
   }
 }
 
-void_t init_encoder(IplImage* src_img, int** enc_mb, quantize_param* qp_param) {
-  read_picture_data(src_img, enc_mb);
+void_t init_encoder(IplImage* src_img, int** enc_mb, encoder_param* enc_param,
+                    quantize_param* qp_param, picture_param* pic_param, int tu_size) {
+  read_picture_data(src_img, enc_mb, tu_size);
+
+  pic_param->org_img_height= src_img->height;
+  pic_param->org_img_width= src_img->width;
+
+  enc_param->blk_size = 0;
+  enc_param->tu_size = 0;
+
   qp_param->intermediate_val = 0;
   qp_param->reduce_ratio = 0;
 }
+
+
 
 int* encode_blk() {
   return 0;

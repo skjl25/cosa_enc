@@ -34,8 +34,8 @@ DEALINGS IN THE SOFTWARE.
 #include <math.h>
 #include <vector>
 #include <stdint.h>
-#include "utility.h"
-#include "typedef.h"
+#include "../../../utility/inc/utility.h"
+#include "../../../utility/inc/typedef.h"
 
 using namespace std;
 

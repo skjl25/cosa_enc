@@ -27,12 +27,11 @@ DEALINGS IN THE SOFTWARE.
 #define DEC_CONIFG_H_
 
 #include "global.h"
-#include "typedef.h"
 #include "dct.h"
 #include "cosa_common.h"
 
 
-void_t recon_picture_data(IplImage* ipl_src_img, int** enc_mb);
+void_t recon_picture_data(IplImage* ipl_src_img, int** enc_mb, int tu_size);
 void_t inv_transform_img(int* dst, int* src, int tu_size);
 void_t dequantize(int* src, quantize_param qp_param, int tu_size);
 

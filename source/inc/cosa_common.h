@@ -28,17 +28,22 @@ DEALINGS IN THE SOFTWARE.
 #define COSA_COMMON_H_
 
 #include "global.h"
-#include "typedef.h"
+#include "../../../utility/inc/typedef.h"
 
 struct quantize_param{
   double_t reduce_ratio;
   double_t intermediate_val;
 };
 
-struct enc_param{
+struct encoder_param{
   int tu_size;
-  int tu_cnt;
+  int blk_size;
   quantize_param qp_param;
+};
+
+struct picture_param{
+  int org_img_width;
+  int org_img_height;
 };
 
 int find_max(int* src, int blk_size);

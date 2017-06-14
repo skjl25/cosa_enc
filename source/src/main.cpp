@@ -66,8 +66,11 @@ void_t main() {
   dec_mb = util.memset2DArray<int>(num_mb, mb_length);
 
   quantize_param qp_param;
+  encoder_param enc_param;
+  picture_param pic_param;
 
-  init_encoder(ipl_gray_img, enc_mb, &qp_param);
+  init_encoder(ipl_gray_img, enc_mb, &enc_param, &qp_param, &pic_param, mb_size);
+  enc_param.tu_size = mb_size;
 
 #if RUN_INFINITE
   while(1){
@@ -75,15 +78,15 @@ void_t main() {
   util.startTimer();
 
   for (uint32_t i = 0; i < num_mb; i++) {
-    transform_img(dct_output, enc_mb[i], mb_size);
+    transform_img(dct_output, enc_mb[i], enc_param.tu_size);
     get_zigzag_array(zigzag_array, dct_output);
 
-    get_quantize_parameter(zigzag_array, &qp_param);
-    quantize(zigzag_array, qp_param, mb_size);
+    get_quantize_parameter(zigzag_array, &qp_param, enc_param.tu_size);
+    quantize(zigzag_array, qp_param, enc_param.tu_size);
 
-    int size_mb_blk = get_size_of_mb_block(zigzag_array, mb_size);
+    enc_param.blk_size = get_size_of_mb_block(zigzag_array, enc_param.tu_size);
 
-    //printf("%d\n", size_mb_blk);
+    //printf("%d\n", enc_param.blk_size);
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -159,14 +162,14 @@ void_t main() {
     //Maybe add secondary transformation to place more coefficients to the left top to prevent futher degradation
     //Utilize 4x4 as a tx for roi
 
-    dequantize(zigzag_array, qp_param, mb_size);
+    dequantize(zigzag_array, qp_param, enc_param.tu_size);
     get_izigzag_array(izigzag_array, zigzag_array);
-    inv_transform_img(dec_mb[i], (int*)izigzag_array, mb_size);
+    inv_transform_img(dec_mb[i], (int*)izigzag_array, enc_param.tu_size);
   }
 
   util.getElapsedTime();
 
-  recon_picture_data(ipl_rec_img, dec_mb);
+  recon_picture_data(ipl_rec_img, dec_mb, enc_param.tu_size);
 
   double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
                                             (uint8_t*)ipl_gray_img->imageData,

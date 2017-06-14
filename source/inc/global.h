@@ -76,6 +76,7 @@ DEALINGS IN THE SOFTWARE.
 #define printf_en               0
 
 #define mb_size                 4
+#define min_mb_size             4
 #define max_mb_size             32
 
 #define DELIVERY_RATIO_NON_ROI  1.0

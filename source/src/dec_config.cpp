@@ -25,16 +25,16 @@ DEALINGS IN THE SOFTWARE.
 
 #include "../inc/dec_config.h"
 
-void_t recon_picture_data(IplImage* ipl_dec_img, int** dec_mb) {
+void_t recon_picture_data(IplImage* ipl_dec_img, int** dec_mb, int tu_size) {
   uint32_t mb_idx = 0;
   uint32_t dst_offset = ipl_dec_img->widthStep;
   char* dec_img = ipl_dec_img->imageData;
 
-  for (int j = 0; j < ipl_dec_img->height; j += mb_size) {
-    for (int i = 0; i < ipl_dec_img->width; i += mb_size) {
-      for (int k = 0; k < mb_size; k++) {
-        for (int l = 0; l < mb_size; l++) {
-          dec_img[(dst_offset * (j + k)) + (i + l)] = (char)dec_mb[mb_idx][(k * mb_size) + l];
+  for (int j = 0; j < ipl_dec_img->height; j += tu_size) {
+    for (int i = 0; i < ipl_dec_img->width; i += tu_size) {
+      for (int k = 0; k < tu_size; k++) {
+        for (int l = 0; l < tu_size; l++) {
+          dec_img[(dst_offset * (j + k)) + (i + l)] = (char)dec_mb[mb_idx][(k * tu_size) + l];
         }
       }
       mb_idx++;
