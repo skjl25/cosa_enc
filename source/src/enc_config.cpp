@@ -86,21 +86,33 @@ void_t quantize(int* src, quantize_param qp_param, int tu_size) {
   }
 }
 
-void_t init_encoder(IplImage* src_img, int** enc_mb, encoder_param* enc_param,
-                    quantize_param* qp_param, picture_param* pic_param, int tu_size) {
-  read_picture_data(src_img, enc_mb, tu_size);
-
+void_t set_picture_parameter(IplImage* src_img, picture_param* pic_param) {
   pic_param->org_img_height= src_img->height;
   pic_param->org_img_width= src_img->width;
 
-  enc_param->blk_size = 0;
-  enc_param->tu_size = 0;
-
-  qp_param->intermediate_val = 0;
-  qp_param->reduce_ratio = 0;
 }
 
+void_t init_encoder_param(IplImage* src_img, encoder_param* enc_param,
+                          int tu_size) {
+  enc_param->blk_size = 0;
+  enc_param->tu_size = tu_size;
+}
 
+void_t init_qp_param(IplImage* src_img, quantize_param* qp_param) {
+  qp_param->intermediate_val = 0;
+  qp_param->reduce_ratio = 0;
+
+}
+
+void_t init_encoder(IplImage* src_img, int** enc_mb, encoder_param* enc_param,
+                    quantize_param* qp_param, picture_param* pic_param,
+                    int tu_size) {
+  set_picture_parameter(src_img, pic_param);
+  init_encoder_param(src_img, enc_param, tu_size);
+  init_qp_param(src_img,qp_param);
+  read_picture_data(src_img, enc_mb, tu_size);
+
+}
 
 int* encode_blk() {
   return 0;

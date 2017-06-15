@@ -45,7 +45,7 @@ int find_min(int* src, int blk_size) {
   return min;
 }
 
-int check_non_zero_all_block(int* src, int blk_size) {
+inline int check_non_zero_all_block(int* src, int blk_size) {
   int non_zero_flag = 0;
 
   for (int j = 0; j < blk_size*blk_size; j++) {
@@ -59,7 +59,7 @@ int check_non_zero_all_block(int* src, int blk_size) {
 }
 
 // check if the 3/4 of the block is 0 coefficients
-int check_non_zero_quarter_block(int* src, int blk_size) {
+inline int check_non_zero_quarter_block(int* src, int blk_size) {
   int non_zero_flag = 0;
 
   for (int j = blk_size - 1; j < blk_size*blk_size; j++) {
@@ -71,7 +71,7 @@ int check_non_zero_quarter_block(int* src, int blk_size) {
   return non_zero_flag;
 }
 
-int check_non_zero_half_block(int* src, int blk_size) {
+inline int check_non_zero_half_block(int* src, int blk_size) {
   int non_zero_flag = 0;
 
   for (int j = (blk_size * 2) - 1; j < blk_size*blk_size; j++) {
@@ -88,7 +88,7 @@ int check_non_zero_half_block(int* src, int blk_size) {
 // return val is 1 : two thirds of the block is zero
 // retrun val is 2 : half of the block is zero
 // return val is 3 : all coefficients in the block is non-zero
-int check_zero_by_partition_block(int* src, int blk_size) {
+inline int check_zero_by_partition_block(int* src, int blk_size) {
   int non_zero_flag = check_non_zero_all_block(src, mb_size);
 
   if (non_zero_flag == 0) {

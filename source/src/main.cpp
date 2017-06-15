@@ -32,11 +32,12 @@ DEALINGS IN THE SOFTWARE.
 
 #pragma warning(disable:4819)
 using namespace std;
-Utility util;
-ImageTools image_tool;
 
 #define RUN_INFINITE 1
 void_t main() {
+  Utility util;
+  ImageTools image_tool;
+
   IplImage* ipl_rec_img = 0;
   IplImage* ipl_gray_img = 0;
   IplImage* ipl_org_img = 0;
@@ -45,8 +46,12 @@ void_t main() {
   int zigzag_array[max_mb_size *max_mb_size];
   int izigzag_array[max_mb_size *max_mb_size];
 
-  int** enc_mb;
-  int** dec_mb;
+  int** enc_mb = 0;
+  int** dec_mb = 0;
+
+  quantize_param qp_param;
+  encoder_param enc_param;
+  picture_param pic_param;
 
   ipl_org_img = cvLoadImage(input_file_name, 1);
   ipl_gray_img = cvCreateImage(cvSize(ipl_org_img->width, ipl_org_img->height), IPL_DEPTH_8U, 1);
@@ -65,12 +70,7 @@ void_t main() {
   enc_mb = util.memset2DArray<int>(num_mb, mb_length);
   dec_mb = util.memset2DArray<int>(num_mb, mb_length);
 
-  quantize_param qp_param;
-  encoder_param enc_param;
-  picture_param pic_param;
-
   init_encoder(ipl_gray_img, enc_mb, &enc_param, &qp_param, &pic_param, mb_size);
-  enc_param.tu_size = mb_size;
 
 #if RUN_INFINITE
   while(1){
