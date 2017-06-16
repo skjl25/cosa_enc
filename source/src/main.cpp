@@ -46,7 +46,6 @@ void_t main() {
   int zigzag_array[max_mb_size *max_mb_size];
   int izigzag_array[max_mb_size *max_mb_size];
 
-  int** enc_mb = 0;
   int** dec_mb = 0;
 
   quantize_param qp_param;
@@ -62,26 +61,21 @@ void_t main() {
   cvSaveImage(output_org_file_name, ipl_gray_img);
 #endif
 
-  uint32_t org_img_w = ipl_org_img->width;
-  uint32_t org_img_h = ipl_org_img->height;
-  uint32_t num_mb = (org_img_h / mb_size)*(org_img_w / mb_size);
-  uint32_t mb_length = mb_size * mb_size;
+  init_encoder(ipl_gray_img, &enc_param, &qp_param, &pic_param, mb_size);
 
-  enc_mb = util.memset2DArray<int>(num_mb, mb_length);
-  dec_mb = util.memset2DArray<int>(num_mb, mb_length);
+  dec_mb = util.memset2DArray<int>(enc_param.num_mb, enc_param.mb_length);
 
-  init_encoder(ipl_gray_img, enc_mb, &enc_param, &qp_param, &pic_param, mb_size);
+  set_picture_data(ipl_gray_img, enc_param.enc_data, mb_size);
 
 #if RUN_INFINITE
   while(1){
 #endif
   util.startTimer();
 
-  for (uint32_t i = 0; i < num_mb; i++) {
-    transform_img(dct_output, enc_mb[i], enc_param.tu_size);
+  for (uint32_t i = 0; i < enc_param.num_mb; i++) {
+    transform_img(dct_output, enc_param.enc_data[i], enc_param.tu_size);
     get_zigzag_array(zigzag_array, dct_output);
 
-    get_quantize_parameter(zigzag_array, &qp_param, enc_param.tu_size);
     quantize(zigzag_array, qp_param, enc_param.tu_size);
 
     enc_param.blk_size = get_size_of_mb_block(zigzag_array, enc_param.tu_size);

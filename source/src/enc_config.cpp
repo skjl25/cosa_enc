@@ -26,7 +26,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include "../inc/enc_config.h"
 
-void_t read_picture_data(IplImage* ipl_src_img, int** enc_mb, int tu_size) {
+void_t set_picture_data(IplImage* ipl_src_img, int** enc_mb, int tu_size) {
   uint32_t mb_idx = 0;
   uint32_t src_offset = ipl_src_img->widthStep;
   char* src_img = ipl_src_img->imageData;
@@ -72,7 +72,7 @@ void_t transform_img(int* dst, int* src, int tu_size) {
   }
 }
 
-void_t get_quantize_parameter(int* src, quantize_param* qp_param, int tu_size) {
+inline void_t get_quantize_parameter(int* src, quantize_param* qp_param, int tu_size) {
   int min = find_min(src, tu_size);
   int max = find_max(src, tu_size);
 
@@ -81,6 +81,9 @@ void_t get_quantize_parameter(int* src, quantize_param* qp_param, int tu_size) {
 }
 
 void_t quantize(int* src, quantize_param qp_param, int tu_size) {
+
+  get_quantize_parameter(src, &qp_param, tu_size);
+
   for (int j = 0; j < tu_size*tu_size; j++) {
     src[j] = (int(src[j] / qp_param.reduce_ratio + qp_param.intermediate_val));
   }
@@ -92,10 +95,16 @@ void_t set_picture_parameter(IplImage* src_img, picture_param* pic_param) {
 
 }
 
-void_t init_encoder_param(IplImage* src_img, encoder_param* enc_param,
+void_t init_encoder_param(picture_param* pic_param, encoder_param* enc_param,
                           int tu_size) {
+  Utility util;
   enc_param->blk_size = 0;
   enc_param->tu_size = tu_size;
+  enc_param->num_mb = (pic_param->org_img_height / tu_size)*
+                    (pic_param->org_img_width / tu_size);
+  enc_param->mb_length = tu_size * tu_size;
+  enc_param->enc_data = util.memset2DArray<int>(enc_param->num_mb,
+                                                enc_param->mb_length);
 }
 
 void_t init_qp_param(IplImage* src_img, quantize_param* qp_param) {
@@ -104,14 +113,12 @@ void_t init_qp_param(IplImage* src_img, quantize_param* qp_param) {
 
 }
 
-void_t init_encoder(IplImage* src_img, int** enc_mb, encoder_param* enc_param,
+void_t init_encoder(IplImage* src_img, encoder_param* enc_param,
                     quantize_param* qp_param, picture_param* pic_param,
                     int tu_size) {
   set_picture_parameter(src_img, pic_param);
-  init_encoder_param(src_img, enc_param, tu_size);
-  init_qp_param(src_img,qp_param);
-  read_picture_data(src_img, enc_mb, tu_size);
-
+  init_encoder_param(pic_param, enc_param, tu_size);
+  init_qp_param(src_img, qp_param);
 }
 
 int* encode_blk() {
