@@ -74,10 +74,8 @@ void_t main() {
 
   for (uint32_t i = 0; i < enc_param.num_mb; i++) {
     transform_img(dct_output, enc_param.enc_data[i], enc_param.tu_size);
-    get_zigzag_array(zigzag_array, dct_output);
-
+    set_scan_oder(zigzag_array, dct_output);
     quantize(zigzag_array, qp_param, enc_param.tu_size);
-
     enc_param.blk_size = get_size_of_mb_block(zigzag_array, enc_param.tu_size);
 
     //printf("%d\n", enc_param.blk_size);
@@ -157,7 +155,7 @@ void_t main() {
     //Utilize 4x4 as a tx for roi
 
     dequantize(zigzag_array, qp_param, enc_param.tu_size);
-    get_izigzag_array(izigzag_array, zigzag_array);
+    set_inverse_scan_oder(izigzag_array, zigzag_array);
     inv_transform_img(dec_mb[i], (int*)izigzag_array, enc_param.tu_size);
   }
 

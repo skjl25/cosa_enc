@@ -152,9 +152,9 @@ void_t get_dct4_hevc(int *dst, int *src, int shift, int line);
 void_t get_idct4_hevc(int *dst, int *src, int shift, int line);
 
 void_t get_dct8_hevc(int* dst, int* src, uint32_t shift,
-  uint32_t line);
+                     uint32_t line);
 void_t get_idct8_hevc(int* dst, int* src, uint32_t shift,
-  uint32_t line);
+                      uint32_t line);
 
 void_t get_dct16_hevc(int* dst, int* src, int shift, int line);
 void_t get_idct16_hevc(int* dst, int* src, int shift, int line);
@@ -165,5 +165,7 @@ void_t get_idct32_hevc(int *dst, int *src, uint32_t shift,
 
 void_t get_izigzag_array(int* dst, int* src);
 void_t get_zigzag_array(int* dst, int* src);
+void_t set_scan_oder(int* dst, int*src);
+void_t set_inverse_scan_oder(int* dst, int*src);
 
 #endif /* DCT_H_ */

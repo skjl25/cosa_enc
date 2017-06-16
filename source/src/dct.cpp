@@ -579,7 +579,7 @@ uint32_t SAD(uint8_t *block, uint8_t* block2, uint32_t x, uint32_t y) {
   return sum;
 }
 
-void_t get_izigzag_array(int* dst, int* src) {
+inline void_t get_izigzag_array(int* dst, int* src) {
   uint32_t width = mb_size;
   uint32_t height = mb_size;
   double_t mb_size_delivery_ratio = width*height*DELIVERY_RATIO_NON_ROI;
@@ -663,7 +663,15 @@ void_t get_izigzag_array(int* dst, int* src) {
   }
 }
 
-void_t get_zigzag_array(int* dst, int* src) {
+void_t set_scan_oder(int* dst, int*src) {
+  get_zigzag_array(dst,src);
+}
+
+void_t set_inverse_scan_oder(int* dst, int*src) {
+  get_izigzag_array(dst,src);
+}
+
+inline void_t get_zigzag_array(int* dst, int* src) {
   uint32_t width = mb_size;
   uint32_t height = mb_size;
 

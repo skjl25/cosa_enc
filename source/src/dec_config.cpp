@@ -66,6 +66,7 @@ void_t inv_transform_img(int* dst, int* src, int tu_size) {
 }
 
 void_t dequantize(int* src, quantize_param qp_param, int tu_size) {
+
   for (int j = 0; j < tu_size*tu_size; j++) {
     double_t restoredVal = (double_t)(src[j] - qp_param.intermediate_val)*qp_param.reduce_ratio;
     //dataVectorTest.push_back(restoredVal);

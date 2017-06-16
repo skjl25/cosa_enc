@@ -44,6 +44,16 @@ struct encoder_param{
   quantize_param qp_param;
 };
 
+struct decoder_param{
+  int tu_size;
+  int blk_size;
+  int** enc_data;
+  int num_mb;
+  int mb_length;
+  quantize_param qp_param;
+};
+
+
 struct picture_param{
   int org_img_width;
   int org_img_height;
