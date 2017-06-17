@@ -71,7 +71,7 @@ struct zigzag_8x8 {
   { 7, 7 }
 };
 
-void_t izigzag_4x4_1d(int16_t* raw_input_data, int* output_data, int* Quantum_1d) {
+void izigzag_4x4_1d(int16_t* raw_input_data, int* output_data, int* Quantum_1d) {
   int i;
   int row;
   int col;
@@ -89,7 +89,7 @@ void_t izigzag_4x4_1d(int16_t* raw_input_data, int* output_data, int* Quantum_1d
   }
 }
 
-void_t zigzag_4x4_1d(double* output_data, int16_t* result_out_put_data, int* Quantum_1d) {
+void zigzag_4x4_1d(double* output_data, int16_t* result_out_put_data, int* Quantum_1d) {
   int i;
   int row;
   int col;
@@ -110,7 +110,7 @@ void_t zigzag_4x4_1d(double* output_data, int16_t* result_out_put_data, int* Qua
   }
 }
 
-void_t izigzag_4x4_2d(int16_t* raw_input_data, int** output_data, int** Quantum_2d) {
+void izigzag_4x4_2d(int16_t* raw_input_data, int** output_data, int** Quantum_2d) {
   int i;
   int row;
   int col;
@@ -125,7 +125,7 @@ void_t izigzag_4x4_2d(int16_t* raw_input_data, int** output_data, int** Quantum_
   }
 }
 
-void_t zigzag_4x4_2d(int** output_data, int16_t* result_out_put_data, int** Quantum_2d) {
+void zigzag_4x4_2d(int** output_data, int16_t* result_out_put_data, int** Quantum_2d) {
   int i;
   int row;
   int col;
@@ -142,7 +142,7 @@ void_t zigzag_4x4_2d(int** output_data, int16_t* result_out_put_data, int** Quan
   }
 }
 
-void_t get_dct4_hevc(int *dst, int *src, int shift, int line) {
+void get_dct4_hevc(int *dst, int *src, int shift, int line) {
   int j;
   int E[2], O[2];
   int add = (shift > 0) ? (1 << (shift - 1)) : 0;
@@ -176,7 +176,7 @@ void_t get_dct4_hevc(int *dst, int *src, int shift, int line) {
 // const TCoeff clipMinimum = -(1 << maxLog2TrDynamicRange);
 // const TCoeff clipMaximum = (1 << maxLog2TrDynamicRange) - 1;
 
-void_t get_idct4_hevc(int *dst, int *src, int shift, int line) {
+void get_idct4_hevc(int *dst, int *src, int shift, int line) {
   int j;
   int E[2], O[2];
   int add = (shift > 0) ? (1 << (shift - 1)) : 0;
@@ -199,7 +199,7 @@ void_t get_idct4_hevc(int *dst, int *src, int shift, int line) {
   }
 }
 
-void_t get_dct8_hevc(int* dst, int* src, uint32_t shift, uint32_t line) {
+void get_dct8_hevc(int* dst, int* src, uint32_t shift, uint32_t line) {
   uint32_t j, k;
   int E[4], O[4];
   int EE[2], EO[2];
@@ -248,7 +248,7 @@ void_t get_dct8_hevc(int* dst, int* src, uint32_t shift, uint32_t line) {
     dst++;
   }
 }
-void_t get_idct8_hevc(int* dst, int* src, uint32_t shift, uint32_t line) {
+void get_idct8_hevc(int* dst, int* src, uint32_t shift, uint32_t line) {
   uint32_t j, k;
   int E[4], O[4];
   int EE[2], EO[2];
@@ -288,7 +288,7 @@ void_t get_idct8_hevc(int* dst, int* src, uint32_t shift, uint32_t line) {
   }
 }
 
-void_t get_dct16_hevc(int* dst, int* src, int shift, int line) {
+void get_dct16_hevc(int* dst, int* src, int shift, int line) {
   int j, k;
   int E[8], O[8];
   int EE[4], EO[4];
@@ -347,7 +347,7 @@ void_t get_dct16_hevc(int* dst, int* src, int shift, int line) {
   }
 }
 
-void_t get_idct16_hevc(int* dst, int* src, int shift, int line) {
+void get_idct16_hevc(int* dst, int* src, int shift, int line) {
   int j, k;
   int E[8], O[8];
   int EE[4], EO[4];
@@ -405,7 +405,7 @@ void_t get_idct16_hevc(int* dst, int* src, int shift, int line) {
   }
 }
 
-void_t get_dct32_hevc(int *dst, int *src, uint32_t shift, uint32_t line) {
+void get_dct32_hevc(int *dst, int *src, uint32_t shift, uint32_t line) {
   int j, k;
   int E[16], O[16];
   int EE[8], EO[8];
@@ -484,7 +484,7 @@ void_t get_dct32_hevc(int *dst, int *src, uint32_t shift, uint32_t line) {
   }
 }
 
-void_t get_idct32_hevc(int *dst, int *src, uint32_t shift,
+void get_idct32_hevc(int *dst, int *src, uint32_t shift,
   uint32_t line) {
   int j, k;
   int E[16], O[16];
@@ -579,7 +579,7 @@ uint32_t SAD(uint8_t *block, uint8_t* block2, uint32_t x, uint32_t y) {
   return sum;
 }
 
-inline void_t get_izigzag_array(int* dst, int* src) {
+inline void get_izigzag_array(int* dst, int* src) {
   uint32_t width = mb_size;
   uint32_t height = mb_size;
   double_t mb_size_delivery_ratio = width*height*DELIVERY_RATIO_NON_ROI;
@@ -663,15 +663,15 @@ inline void_t get_izigzag_array(int* dst, int* src) {
   }
 }
 
-void_t set_scan_oder(int* dst, int*src) {
+void set_scan_oder(int* dst, int*src) {
   get_zigzag_array(dst,src);
 }
 
-void_t set_inverse_scan_oder(int* dst, int*src) {
+void set_inverse_scan_oder(int* dst, int*src) {
   get_izigzag_array(dst,src);
 }
 
-inline void_t get_zigzag_array(int* dst, int* src) {
+inline void get_zigzag_array(int* dst, int* src) {
   uint32_t width = mb_size;
   uint32_t height = mb_size;
 

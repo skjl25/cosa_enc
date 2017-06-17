@@ -33,14 +33,14 @@ DEALINGS IN THE SOFTWARE.
 #include "dct.h"
 #include "cosa_common.h"
 
-void_t set_picture_data(IplImage* ipl_src_img, int** enc_mb, int tu_size);
+void set_picture_data(IplImage* ipl_src_img, int** enc_mb, int tu_size);
 
-void_t transform_img(int* dst, int* src, int tu_size);
+void transform_img(int* dst, int* src, int tu_size);
 
-void_t get_quantize_parameter(int* src, quantize_param* qp_param, int tu_size);
-void_t quantize(int* src, quantize_param* qp_param, int tu_size);
+void get_quantize_parameter(int* src, quantize_param* qp_param, int tu_size);
+void quantize(int* src, quantize_param* qp_param, int tu_size);
 
-void_t init_encoder(IplImage* src_img, encoder_param* enc_param,
+void init_encoder(IplImage* src_img, encoder_param* enc_param,
                     quantize_param* qp_param, picture_param* pic_param,
                     int tu_size);
 

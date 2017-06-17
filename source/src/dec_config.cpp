@@ -25,7 +25,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include "../inc/dec_config.h"
 
-void_t recon_picture_data(IplImage* ipl_dec_img, int** dec_mb, int tu_size) {
+void recon_picture_data(IplImage* ipl_dec_img, int** dec_mb, int tu_size) {
   uint32_t mb_idx = 0;
   uint32_t dst_offset = ipl_dec_img->widthStep;
   char* dec_img = ipl_dec_img->imageData;
@@ -43,7 +43,7 @@ void_t recon_picture_data(IplImage* ipl_dec_img, int** dec_mb, int tu_size) {
 }
 
 
-void_t inv_transform_img(int* dst, int* src, int tu_size) {
+void inv_transform_img(int* dst, int* src, int tu_size) {
   int coef_inv[max_mb_size *max_mb_size];
 
   int shift_1st = 7;
@@ -65,7 +65,7 @@ void_t inv_transform_img(int* dst, int* src, int tu_size) {
 
 }
 
-void_t dequantize(int* src, quantize_param qp_param, int tu_size) {
+void dequantize(int* src, quantize_param qp_param, int tu_size) {
 
   for (int j = 0; j < tu_size*tu_size; j++) {
     double_t restoredVal = (double_t)(src[j] - qp_param.intermediate_val)*qp_param.reduce_ratio;

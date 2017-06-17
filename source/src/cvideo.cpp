@@ -56,7 +56,7 @@ cvideo::~cvideo() {
   // TODO Auto-generated destructor stub
 }
 
-void_t cvideo::setMacroBHolder() {
+void cvideo::setMacroBHolder() {
   Utility util;
   macroBHolder = new mb[numberOfMacroBlocks];
   for (int i = 0; i < numberOfMacroBlocks; i++) {
@@ -82,7 +82,7 @@ void_t cvideo::setMacroBHolder() {
 //getchar();
 //}
 
-void_t cvideo::getDCTArray() {
+void cvideo::getDCTArray() {
   Utility util;
   int Width = getMacroBlockWidth();
   int Height = getMacroBlockHeight();
@@ -267,7 +267,7 @@ vector<double_t> cvideo::getZigZagArray_with_ROI_ext() {
   return integratedVector;
 }
 
-void_t cvideo::getZigZagArray_with_ROI(double_t* realReturnArray, int macroBlockID) {
+void cvideo::getZigZagArray_with_ROI(double_t* realReturnArray, int macroBlockID) {
   int Width = getMacroBlockWidth();
   int Height = getMacroBlockHeight();
   double_t* returnArray = new double_t[Width * Height];
@@ -391,7 +391,7 @@ double_t* cvideo::getOneIntegratedArray_withROI(double_t** inputArray, vector<in
   return returnArray;
 }
 
-void_t cvideo::getIDCTArray() {
+void cvideo::getIDCTArray() {
   int Width = getMacroBlockWidth();
   int Height = getMacroBlockHeight();
   Utility util;
@@ -438,7 +438,7 @@ void_t cvideo::getIDCTArray() {
     }
   }
 }
-void_t cvideo::getInverseZigZagArray(double_t** inputArray) {
+void cvideo::getInverseZigZagArray(double_t** inputArray) {
   int Width = getMacroBlockWidth();
   int Height = getMacroBlockHeight();
   int lengthOfOneMacroStringLocal = getLengthOfOneMacroString();
@@ -528,7 +528,7 @@ void_t cvideo::getInverseZigZagArray(double_t** inputArray) {
   }
 }
 
-void_t cvideo::getInverseZigZagArray_withROI(vector< vector<double_t> > inputArray, vector<int> vw) {
+void cvideo::getInverseZigZagArray_withROI(vector< vector<double_t> > inputArray, vector<int> vw) {
   int Width = getMacroBlockWidth();
   int Height = getMacroBlockHeight();
   int lengthOfOneMacroStringLocal = getLengthOfOneMacroString();
@@ -715,7 +715,7 @@ double_t** cvideo::setMacroBlocksToOriginalImage() {
   return returnArray2;
 }
 
-void_t cvideo::setMacroBPixel(double_t** double_tOrgImage) {
+void cvideo::setMacroBPixel(double_t** double_tOrgImage) {
   for (int x = 0; x < getNumberOfColumn(); x++) {
     for (int y = 0; y < getNumberOfRow(); y++) {
       for (int i = 0; i < getMacroBlockWidth(); i++) {
@@ -728,7 +728,7 @@ void_t cvideo::setMacroBPixel(double_t** double_tOrgImage) {
   }
 }
 
-void_t cvideo::setMacroBPixel_withROI(double_t** double_tOrgImage, vector<int> vw) {
+void cvideo::setMacroBPixel_withROI(double_t** double_tOrgImage, vector<int> vw) {
   int index = 0;
   int macroBlockIndex = 0;
   for (int x = 0; x < getNumberOfColumn(); x++) {
@@ -756,7 +756,7 @@ void_t cvideo::setMacroBPixel_withROI(double_t** double_tOrgImage, vector<int> v
   }
 }
 
-void_t cvideo::setMacroBPixel_withROI_ext(IplImage* grayImage, vector<int> vw) {
+void cvideo::setMacroBPixel_withROI_ext(IplImage* grayImage, vector<int> vw) {
   int index = 0;
   int macroBlockIndex = 0;
   for (int x = 0; x < getNumberOfColumn(); x++) {
@@ -794,7 +794,7 @@ char* cvideo::convertToGrayScale(char* origImg, int width, int height) {
   return grayG2ImgChar;
 }
 
-void_t cvideo::init_cvideo() {
+void cvideo::init_cvideo() {
   //4*4*number of row *number of height=number of Pixels
   //number of row *number of height=number of macro blocks
   //number of row=image height/macro block height
@@ -816,7 +816,7 @@ void_t cvideo::init_cvideo() {
 
 // from here
 
-void_t cvideo::zigzag(short* block) {
+void cvideo::zigzag(short* block) {
   int i;
   short zig[64];
 
@@ -919,7 +919,7 @@ vector<int> FindImportantRegion(IplImage* inputArray, int macroBlockWidth, int m
   return array;
 }
 
-void_t cvideo::quantization(short** mat) {
+void cvideo::quantization(short** mat) {
   short quant[64] =
   {
     2048, 2979, 3277, 2048, 1365, 819, 643, 537,
@@ -1081,7 +1081,7 @@ short cvideo::symbol2(short diff)              // calculate symbol-2
   }
   return symbol;
 }
-void_t cvideo::dc_encoding(short** mat, int** intmat, int* preblock)                 // function doing DC encoding
+void cvideo::dc_encoding(short** mat, int** intmat, int* preblock)                 // function doing DC encoding
 {
   int DCbit[12] =
   {
@@ -1103,7 +1103,7 @@ void_t cvideo::dc_encoding(short** mat, int** intmat, int* preblock)            
     intmat[j][0] = data << (32 - bit);      // shift the data to the most significant bit, and store in stream[0]
   }
 }
-void_t cvideo::ac_encoding(short** mat, int** intmat, int* preblock) {
+void cvideo::ac_encoding(short** mat, int** intmat, int* preblock) {
   short acsym1, acsym2;
   int i, num, data_num;
   short run, cate;
@@ -1370,7 +1370,7 @@ short cvideo::symb2(short sym2, short cat)               // calculate the origin
   return code;
 }
 
-void_t cvideo::ac_decoding(short** mat, int** intmat, int* preblock) {
+void cvideo::ac_decoding(short** mat, int** intmat, int* preblock) {
   short acsym1, acsym2;
   int i, j, position;
   int data, bit;
@@ -1455,7 +1455,7 @@ short cvideo::IdcHuff(int data)                          // calculate CAT from d
   }
   return cate;
 }
-void_t cvideo::dc_decoding(short** mat, int** intmat, int* Ipreblock)                 // function doing dc decoding
+void cvideo::dc_decoding(short** mat, int** intmat, int* Ipreblock)                 // function doing dc decoding
 {
   int DCbit[12] =
   {
@@ -1480,7 +1480,7 @@ void_t cvideo::dc_decoding(short** mat, int** intmat, int* Ipreblock)           
     *Ipreblock = mat[j][0];
   }
 }
-void_t cvideo::izigzag(short* block) {
+void cvideo::izigzag(short* block) {
   int i;
   short izig[64];
 
@@ -1553,7 +1553,7 @@ void_t cvideo::izigzag(short* block) {
     block[i] = izig[i];
   }
 }
-void_t cvideo::iquantization(short** mat) {
+void cvideo::iquantization(short** mat) {
   short iquant[64] =
   {
     16, 11, 10, 16, 24, 40, 51, 61,

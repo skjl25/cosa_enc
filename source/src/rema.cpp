@@ -44,7 +44,7 @@ ReMA::~ReMA() {
 }
 
 //For 2x2 matrix
-void_t ReMA::mergeVisibleDepthData() {
+void ReMA::mergeVisibleDepthData() {
   int indexForDepthBlock = 0;
   int length = (width*height) / 2;
   for (int i = 0; i < length; i++) {
@@ -151,7 +151,7 @@ int* ReMA::getEncodedDWTExt(double_t* dwtOrgImage, int width, int height) {
   return oneMergeFilter;
 }
 
-void_t ReMA::rema_visible_encode(int* dwtOrgImage) {
+void ReMA::rema_visible_encode(int* dwtOrgImage) {
   int* highPassFilter = NULL;
   int* lowPassFilter = NULL;
 
@@ -184,7 +184,7 @@ void_t ReMA::rema_visible_encode(int* dwtOrgImage) {
 
   //	return oneMergeFilter;
 }
-void_t ReMA::rema_visible_encode(double_t* dwtOrgImage) {
+void ReMA::rema_visible_encode(double_t* dwtOrgImage) {
   int* highPassFilter = NULL;
   int* lowPassFilter = NULL;
 
@@ -281,7 +281,7 @@ void_t ReMA::rema_visible_encode(double_t* dwtOrgImage) {
 //	return oneMergeFilter;
 //}
 
-void_t ReMA::extractVisibleDepthData(char* receivedData) {
+void ReMA::extractVisibleDepthData(char* receivedData) {
   int indexT = 0;
   int indexT2 = 0;
   for (uint32_t i = 0; i < (width*height) / 2; i++) {
@@ -296,7 +296,7 @@ void_t ReMA::extractVisibleDepthData(char* receivedData) {
   }
 }
 
-void_t ReMA::getReplicateBlocks(int compressedIndicator) {
+void ReMA::getReplicateBlocks(int compressedIndicator) {
   //	int* oneMergeFilter=new int[width*height];
 
   for (uint32_t i = 0; i < (width*height / compressedIndicator); i++) {
@@ -314,7 +314,7 @@ void_t ReMA::getReplicateBlocks(int compressedIndicator) {
   //	return oneMergeFilter;
 }
 
-void_t ReMA::rema_visible_decode() {
+void ReMA::rema_visible_decode() {
   //	int* dwtRecoveredImage=new int[width*height];
 
   for (uint32_t i = 0; i < (width*height) / 2; i++) {
@@ -326,7 +326,7 @@ void_t ReMA::rema_visible_decode() {
   //	return dwtRecoveredImage;
 }
 
-//void_t ReMA::rema_visible_decode(double_t* oneMergeFilter,int width,int height){
+//void ReMA::rema_visible_decode(double_t* oneMergeFilter,int width,int height){
 //	int* dwtRecoveredImage=new int[width*height];
 //
 //	for(int i=0;i<(width*height)/2;i++)
@@ -356,7 +356,7 @@ int* ReMA::getDWTBlock(int* oneMergeFilter, int width, int height, int compresse
   return blockTopLeft;
 }
 
-void_t ReMA::rema_depth_decode_2() {
+void ReMA::rema_depth_decode_2() {
   int expValIndex = 0;
   for (uint32_t i = 0; i < (height*width) / 4; i++) {
     int indexY = expValIndex / (width);
@@ -376,7 +376,7 @@ void_t ReMA::rema_depth_decode_2() {
   }
 }
 
-void_t ReMA::rema_depth_encode_2(int* realDepthVal1D) {
+void ReMA::rema_depth_encode_2(int* realDepthVal1D) {
   int depthHolder = 0;
 
   int returnValIndex = 0;

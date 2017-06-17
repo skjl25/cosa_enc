@@ -26,7 +26,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include "../inc/enc_config.h"
 
-void_t set_picture_data(IplImage* ipl_src_img, int** enc_mb, int tu_size) {
+void set_picture_data(IplImage* ipl_src_img, int** enc_mb, int tu_size) {
   uint32_t mb_idx = 0;
   uint32_t src_offset = ipl_src_img->widthStep;
   char* src_img = ipl_src_img->imageData;
@@ -43,7 +43,7 @@ void_t set_picture_data(IplImage* ipl_src_img, int** enc_mb, int tu_size) {
   }
 }
 
-void_t transform_img(int* dst, int* src, int tu_size) {
+void transform_img(int* dst, int* src, int tu_size) {
   //int* coef = (int*)malloc(sizeof(int) * mb_size * mb_size);
   int coef[max_mb_size *max_mb_size];
   int shift_1st = 0;
@@ -72,7 +72,7 @@ void_t transform_img(int* dst, int* src, int tu_size) {
   }
 }
 
-inline void_t get_quantize_parameter(int* src, quantize_param* qp_param, int tu_size) {
+inline void get_quantize_parameter(int* src, quantize_param* qp_param, int tu_size) {
   int min = find_min(src, tu_size);
   int max = find_max(src, tu_size);
 
@@ -80,7 +80,7 @@ inline void_t get_quantize_parameter(int* src, quantize_param* qp_param, int tu_
   qp_param->intermediate_val = abs(min) / qp_param->reduce_ratio;
 }
 
-void_t quantize(int* src, quantize_param* qp_param, int tu_size) {
+void quantize(int* src, quantize_param* qp_param, int tu_size) {
 
   get_quantize_parameter(src, qp_param, tu_size);
 
@@ -89,13 +89,13 @@ void_t quantize(int* src, quantize_param* qp_param, int tu_size) {
   }
 }
 
-void_t set_picture_parameter(IplImage* src_img, picture_param* pic_param) {
+void set_picture_parameter(IplImage* src_img, picture_param* pic_param) {
   pic_param->org_img_height= src_img->height;
   pic_param->org_img_width= src_img->width;
 
 }
 
-void_t init_encoder_param(picture_param* pic_param, encoder_param* enc_param,
+void init_encoder_param(picture_param* pic_param, encoder_param* enc_param,
                           int tu_size) {
   Utility util;
   enc_param->blk_size = 0;
@@ -107,13 +107,13 @@ void_t init_encoder_param(picture_param* pic_param, encoder_param* enc_param,
                                                 enc_param->mb_length);
 }
 
-void_t init_qp_param(IplImage* src_img, quantize_param* qp_param) {
+void init_qp_param(IplImage* src_img, quantize_param* qp_param) {
   qp_param->intermediate_val = 0;
   qp_param->reduce_ratio = 0;
 
 }
 
-void_t init_encoder(IplImage* src_img, encoder_param* enc_param,
+void init_encoder(IplImage* src_img, encoder_param* enc_param,
                     quantize_param* qp_param, picture_param* pic_param,
                     int tu_size) {
   set_picture_parameter(src_img, pic_param);

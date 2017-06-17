@@ -31,8 +31,8 @@ DEALINGS IN THE SOFTWARE.
 #include "cosa_common.h"
 
 
-void_t recon_picture_data(IplImage* ipl_src_img, int** enc_mb, int tu_size);
-void_t inv_transform_img(int* dst, int* src, int tu_size);
-void_t dequantize(int* src, quantize_param qp_param, int tu_size);
+void recon_picture_data(IplImage* ipl_src_img, int** enc_mb, int tu_size);
+void inv_transform_img(int* dst, int* src, int tu_size);
+void dequantize(int* src, quantize_param qp_param, int tu_size);
 
 #endif /* DEC_CONIFG_H_ */

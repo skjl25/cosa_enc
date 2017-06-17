@@ -138,34 +138,34 @@ const short g_aiT32[TRANSFORM_NUMBER_OF_DIRECTIONS][32][32] =
   DEFINE_DCT32x32_MATRIX(64, 83, 36, 89, 75, 50, 18, 90, 87, 80, 70, 57, 43, 25, 9, 90, 90, 88, 85, 82, 78, 73, 67, 61, 54, 46, 38, 31, 22, 13, 4)
 };
 
-void_t izigzag_4x4_1d(int16_t* raw_input_data, int* output_data, int* Quantum_1d);
+void izigzag_4x4_1d(int16_t* raw_input_data, int* output_data, int* Quantum_1d);
 
-void_t zigzag_4x4_1d(double* output_data, int16_t* result_out_put_data,
+void zigzag_4x4_1d(double* output_data, int16_t* result_out_put_data,
   int* Quantum_1d);
 
-void_t zigzag_4x4_2d(int** output_data, int16_t* result_out_put_data,
+void zigzag_4x4_2d(int** output_data, int16_t* result_out_put_data,
   int** Quantum_2d);
 
-void_t izigzag_4x4_2d(int16_t* raw_input_data, int** output_data, int** Quantum_2d);
+void izigzag_4x4_2d(int16_t* raw_input_data, int** output_data, int** Quantum_2d);
 
-void_t get_dct4_hevc(int *dst, int *src, int shift, int line);
-void_t get_idct4_hevc(int *dst, int *src, int shift, int line);
+void get_dct4_hevc(int *dst, int *src, int shift, int line);
+void get_idct4_hevc(int *dst, int *src, int shift, int line);
 
-void_t get_dct8_hevc(int* dst, int* src, uint32_t shift,
+void get_dct8_hevc(int* dst, int* src, uint32_t shift,
                      uint32_t line);
-void_t get_idct8_hevc(int* dst, int* src, uint32_t shift,
+void get_idct8_hevc(int* dst, int* src, uint32_t shift,
                       uint32_t line);
 
-void_t get_dct16_hevc(int* dst, int* src, int shift, int line);
-void_t get_idct16_hevc(int* dst, int* src, int shift, int line);
+void get_dct16_hevc(int* dst, int* src, int shift, int line);
+void get_idct16_hevc(int* dst, int* src, int shift, int line);
 
-void_t get_dct32_hevc(int *dst, int *src, uint32_t shift, uint32_t line);
-void_t get_idct32_hevc(int *dst, int *src, uint32_t shift,
+void get_dct32_hevc(int *dst, int *src, uint32_t shift, uint32_t line);
+void get_idct32_hevc(int *dst, int *src, uint32_t shift,
   uint32_t line);
 
-void_t get_izigzag_array(int* dst, int* src);
-void_t get_zigzag_array(int* dst, int* src);
-void_t set_scan_oder(int* dst, int*src);
-void_t set_inverse_scan_oder(int* dst, int*src);
+void get_izigzag_array(int* dst, int* src);
+void get_zigzag_array(int* dst, int* src);
+void set_scan_oder(int* dst, int*src);
+void set_inverse_scan_oder(int* dst, int*src);
 
 #endif /* DCT_H_ */

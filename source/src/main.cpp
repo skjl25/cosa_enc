@@ -34,7 +34,7 @@ DEALINGS IN THE SOFTWARE.
 using namespace std;
 
 #define RUN_INFINITE 1
-void_t main() {
+void main() {
   Utility util;
   ImageTools image_tool;
 

@@ -60,43 +60,43 @@ public:
   cvideo(int Height, int Width, int macroBlockSize, double_t nonROIDeliver,
     double_t ROIDeliver);
 
-  void_t setMacroBHolder();
+  void setMacroBHolder();
   double_t* getOneIntegratedArray(double_t** inputArray);
 
-  void_t setMacroBPixel(double_t** double_tOrgImage);
-  void_t getDCTArray();
+  void setMacroBPixel(double_t** double_tOrgImage);
+  void getDCTArray();
   double_t* getZigZagArray(int macroBlockID);
   double_t** setMacroBlocksToOriginalImage();
-  void_t getInverseZigZagArray(double_t** inputArray);
+  void getInverseZigZagArray(double_t** inputArray);
 
-  void_t setMacroBPixel_withROI(double_t** double_tOrgImage, vector<int> vw);
+  void setMacroBPixel_withROI(double_t** double_tOrgImage, vector<int> vw);
 
-  void_t getIDCTArray();
+  void getIDCTArray();
 
   // frome here
 
-  void_t quantization(short** matrix);
-  void_t dc_encoding(short** mat, int** intmat, int* preblock);
-  void_t ac_encoding(short** mat, int** intmat, int* preblock);
-  void_t zigzag(short* block);
-  void_t ac_decoding(short** mat, int** intmat, int* Ipreblock);
+  void quantization(short** matrix);
+  void dc_encoding(short** mat, int** intmat, int* preblock);
+  void ac_encoding(short** mat, int** intmat, int* preblock);
+  void zigzag(short* block);
+  void ac_decoding(short** mat, int** intmat, int* Ipreblock);
   int* IacHuff(int data);
   short symb2(short sym2, short cat);               // calculate the original data from symbol-2
-  void_t dc_decoding(short** mat, int** intmat, int* Ipreblock);                 // function doing dc decoding;
+  void dc_decoding(short** mat, int** intmat, int* Ipreblock);                 // function doing dc decoding;
   short symbol2(short diff);
   int count(short run, short cat);
   short achuff(short run, short cat);
   short dchuff(short cat);
   short cat(short diff);
   short IdcHuff(int data);
-  void_t iquantization(short** mat);
-  void_t izigzag(short* block);
+  void iquantization(short** mat);
+  void izigzag(short* block);
 
   //////////////////////////////////////////////////////
 
   char* convertToGrayScale(char* origImg, int width, int height);
-  void_t getZigZagArray_with_ROI(double_t* realReturnArray, int macroBlockID);
-  void_t getInverseZigZagArray_withROI(vector< vector<double_t> > inputArray, vector<int> vw);
+  void getZigZagArray_with_ROI(double_t* realReturnArray, int macroBlockID);
+  void getInverseZigZagArray_withROI(vector< vector<double_t> > inputArray, vector<int> vw);
   double_t* getOneIntegratedArray_withROI(double_t** inputArray, vector<int> vw);
 
   inline int getNumberOfRow() { return numberOfRow; };
@@ -111,23 +111,23 @@ public:
   inline int getLengthOfOneMacroString() { return lengthOfOneMacroString; };
   inline int getROILengthOfOneMacroString() { return ROIlengthOfOneMacroString; };
 
-  inline void_t setNumberOfRow() { numberOfRow = imageHeight / macroBlockHeight; };
-  inline void_t setNumberOfColumn() { numberOfColumn = imageWidth / macroBlockWidth; };
-  inline void_t setNumberOfMacroBlocks() { numberOfMacroBlocks = numberOfRow*numberOfColumn; };
-  inline void_t setMacroBlockWidth(int mbwidth) { macroBlockWidth = mbwidth; };
-  inline void_t setMacroBlockHeight(int mbwidth) { macroBlockHeight = mbwidth; };
-  inline void_t setImageHeight(int imageHeight1) { imageHeight = imageHeight1; };
-  inline void_t setImageWidth(int imageWidth1) { imageWidth = imageWidth1; };
-  inline void_t setDeliveryRate(double_t dR) { deliveryRate = dR; };
-  inline void_t setROIDeliveryRate(double_t dR) { ROIdeliveryRate = dR; };
-  inline void_t setLengthOfOneMacroString() { lengthOfOneMacroString = (int)(macroBlockHeight * macroBlockWidth * deliveryRate); };
-  inline void_t setLengthOfOneMacroString_withROI() { ROIlengthOfOneMacroString = (int)(macroBlockHeight * macroBlockWidth * 1.0); };
+  inline void setNumberOfRow() { numberOfRow = imageHeight / macroBlockHeight; };
+  inline void setNumberOfColumn() { numberOfColumn = imageWidth / macroBlockWidth; };
+  inline void setNumberOfMacroBlocks() { numberOfMacroBlocks = numberOfRow*numberOfColumn; };
+  inline void setMacroBlockWidth(int mbwidth) { macroBlockWidth = mbwidth; };
+  inline void setMacroBlockHeight(int mbwidth) { macroBlockHeight = mbwidth; };
+  inline void setImageHeight(int imageHeight1) { imageHeight = imageHeight1; };
+  inline void setImageWidth(int imageWidth1) { imageWidth = imageWidth1; };
+  inline void setDeliveryRate(double_t dR) { deliveryRate = dR; };
+  inline void setROIDeliveryRate(double_t dR) { ROIdeliveryRate = dR; };
+  inline void setLengthOfOneMacroString() { lengthOfOneMacroString = (int)(macroBlockHeight * macroBlockWidth * deliveryRate); };
+  inline void setLengthOfOneMacroString_withROI() { ROIlengthOfOneMacroString = (int)(macroBlockHeight * macroBlockWidth * 1.0); };
 
-  void_t setMacroBPixel_withROI_ext(IplImage* grayImage, vector<int> vw);
+  void setMacroBPixel_withROI_ext(IplImage* grayImage, vector<int> vw);
   vector<double_t> getZigZagArray_with_ROI_ext();
 
   virtual ~cvideo();
-  void_t init_cvideo();
+  void init_cvideo();
 
 private:
   int numberOfRow;//for now for 256 macro blocks

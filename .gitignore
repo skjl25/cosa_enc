@@ -62,3 +62,11 @@ Release/
 *.suo
 packages/
 *.ilk
+bin/
+.vs/cosa-enc/v15/Browse.VC.db
+.vs/cosa-enc/v15/ipch/AutoPCH/COSA-ENC-a113f7f/REMA-9aa6375e/REMA.ipch
+.vs/cosa-enc/v15/ipch/AutoPCH/COSA-ENC-a113f7f/CVIDEO-c90ae4b3/CVIDEO.ipch
+.vs/cosa-enc/v15/Solution.VC.db-wal
+.vs/cosa-enc/v15/Solution.VC.db-shm
+.vs/cosa-enc/v15/Solution.VC.db
+.vs/cosa-enc/v15/Browse.VC.opendb
