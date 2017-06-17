@@ -80,12 +80,12 @@ inline void_t get_quantize_parameter(int* src, quantize_param* qp_param, int tu_
   qp_param->intermediate_val = abs(min) / qp_param->reduce_ratio;
 }
 
-void_t quantize(int* src, quantize_param qp_param, int tu_size) {
+void_t quantize(int* src, quantize_param* qp_param, int tu_size) {
 
-  get_quantize_parameter(src, &qp_param, tu_size);
+  get_quantize_parameter(src, qp_param, tu_size);
 
   for (int j = 0; j < tu_size*tu_size; j++) {
-    src[j] = (int(src[j] / qp_param.reduce_ratio + qp_param.intermediate_val));
+    src[j] = (int(src[j] / qp_param->reduce_ratio + qp_param->intermediate_val));
   }
 }
 

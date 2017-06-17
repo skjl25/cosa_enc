@@ -75,7 +75,7 @@ void_t main() {
   for (uint32_t i = 0; i < enc_param.num_mb; i++) {
     transform_img(dct_output, enc_param.enc_data[i], enc_param.tu_size);
     set_scan_oder(zigzag_array, dct_output);
-    quantize(zigzag_array, qp_param, enc_param.tu_size);
+    quantize(zigzag_array, &qp_param, enc_param.tu_size);
     enc_param.blk_size = get_size_of_mb_block(zigzag_array, enc_param.tu_size);
 
     //printf("%d\n", enc_param.blk_size);
