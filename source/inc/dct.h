@@ -151,17 +151,14 @@ void izigzag_4x4_2d(int16_t* raw_input_data, int** output_data, int** Quantum_2d
 void get_dct4_hevc(int *dst, int *src, int shift, int line);
 void get_idct4_hevc(int *dst, int *src, int shift, int line);
 
-void get_dct8_hevc(int* dst, int* src, uint32_t shift,
-                     uint32_t line);
-void get_idct8_hevc(int* dst, int* src, uint32_t shift,
-                      uint32_t line);
+void get_dct8_hevc(int* dst, int* src, uint32_t shift, uint32_t line);
+void get_idct8_hevc(int* dst, int* src, uint32_t shift,uint32_t line);
 
 void get_dct16_hevc(int* dst, int* src, int shift, int line);
 void get_idct16_hevc(int* dst, int* src, int shift, int line);
 
 void get_dct32_hevc(int *dst, int *src, uint32_t shift, uint32_t line);
-void get_idct32_hevc(int *dst, int *src, uint32_t shift,
-  uint32_t line);
+void get_idct32_hevc(int *dst, int *src, uint32_t shift, uint32_t line);
 
 void get_izigzag_array(int* dst, int* src);
 void get_zigzag_array(int* dst, int* src);

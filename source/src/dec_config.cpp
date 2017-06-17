@@ -65,11 +65,14 @@ void inv_transform_img(int* dst, int* src, int tu_size) {
 
 }
 
-void dequantize(int* src, quantize_param qp_param, int tu_size) {
+inline void dequantize_data(int* src, quantize_param qp_param, int tu_size) {
+	for (int j = 0; j < tu_size*tu_size; j++) {
+		double_t restoredVal = (double_t)(src[j] - qp_param.intermediate_val)*qp_param.reduce_ratio;
+		//dataVectorTest.push_back(restoredVal);
+		src[j] = (int)restoredVal;
+	}
+}
 
-  for (int j = 0; j < tu_size*tu_size; j++) {
-    double_t restoredVal = (double_t)(src[j] - qp_param.intermediate_val)*qp_param.reduce_ratio;
-    //dataVectorTest.push_back(restoredVal);
-    src[j] = (int)restoredVal;
-  }
+void dequantize(int* src, quantize_param qp_param, int tu_size) {
+	dequantize_data(src, qp_param, tu_size);
 }

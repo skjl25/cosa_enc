@@ -70,3 +70,4 @@ bin/
 .vs/cosa-enc/v15/Solution.VC.db-shm
 .vs/cosa-enc/v15/Solution.VC.db
 .vs/cosa-enc/v15/Browse.VC.opendb
+*.ipch
