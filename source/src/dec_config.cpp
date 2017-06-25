@@ -66,13 +66,28 @@ void inv_transform_img(int* dst, int* src, int tu_size) {
 }
 
 inline void dequantize_data(int* src, quantize_param qp_param, int tu_size) {
-	for (int j = 0; j < tu_size*tu_size; j++) {
-		double_t restoredVal = (double_t)(src[j] - qp_param.intermediate_val)*qp_param.reduce_ratio;
-		//dataVectorTest.push_back(restoredVal);
-		src[j] = (int)restoredVal;
-	}
+  for (int j = 0; j < tu_size*tu_size; j++) {
+    src[j] = (int)(src[j] - qp_param.intermediate_val)*qp_param.reduce_ratio;
+  }
 }
 
 void dequantize(int* src, quantize_param qp_param, int tu_size) {
-	dequantize_data(src, qp_param, tu_size);
+  dequantize_data(src, qp_param, tu_size);
+}
+
+void init_decoder_param(picture_param* pic_param, decoder_param* dec_param,
+                        int tu_size) {
+  Utility util;
+  dec_param->blk_size = 0;
+  dec_param->tu_size = tu_size;
+  dec_param->num_mb = (pic_param->org_img_height / tu_size)*
+                      (pic_param->org_img_width / tu_size);
+  dec_param->mb_length = tu_size * tu_size;
+  dec_param->dec_data = util.memset2DArray<int>(dec_param->num_mb,
+                                                dec_param->mb_length);
+}
+
+void init_decoder(IplImage* src_img, decoder_param* dec_param, 
+                  picture_param* pic_param, int tu_size) {
+  init_decoder_param(pic_param, dec_param, tu_size);
 }

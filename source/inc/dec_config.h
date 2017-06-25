@@ -34,5 +34,7 @@ DEALINGS IN THE SOFTWARE.
 void recon_picture_data(IplImage* ipl_src_img, int** enc_mb, int tu_size);
 void inv_transform_img(int* dst, int* src, int tu_size);
 void dequantize(int* src, quantize_param qp_param, int tu_size);
+void init_decoder(IplImage* src_img, decoder_param* dec_param,
+                  picture_param* pic_param, int tu_size);
 
 #endif /* DEC_CONIFG_H_ */

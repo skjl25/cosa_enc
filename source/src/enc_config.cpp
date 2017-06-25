@@ -81,9 +81,9 @@ inline void get_quantize_parameter(int* src, quantize_param* qp_param, int tu_si
 }
 
 inline void quantize_data(int* src, quantize_param* qp_param, int tu_size) {
-	for (int j = 0; j < tu_size*tu_size; j++) {
-		src[j] = (int(src[j] / qp_param->reduce_ratio + qp_param->intermediate_val));
-	}
+  for (int j = 0; j < tu_size*tu_size; j++) {
+    src[j] = (int(src[j] / qp_param->reduce_ratio + qp_param->intermediate_val));
+  }
 }
 
 void quantize(int* src, quantize_param* qp_param, encoder_param* enc_param) {

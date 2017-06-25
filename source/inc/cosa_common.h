@@ -41,16 +41,16 @@ struct encoder_param{
   int** enc_data;
   int num_mb;
   int mb_length;
-  quantize_param qp_param;
+  //quantize_param qp_param;
 };
 
 struct decoder_param{
   int tu_size;
   int blk_size;
-  int** enc_data;
+  int** dec_data;
   int num_mb;
   int mb_length;
-  quantize_param qp_param;
+  //quantize_param qp_param;
 };
 
 

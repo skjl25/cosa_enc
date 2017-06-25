@@ -23,7 +23,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-
 #include "../inc/global.h"
 #include "../inc/cvideo.h"
 #include "../inc/dct.h"
@@ -51,6 +50,7 @@ void main() {
 
   quantize_param qp_param;
   encoder_param enc_param;
+  decoder_param dec_param;
   picture_param pic_param;
 
   ipl_org_img = cvLoadImage(input_file_name, 1);
@@ -63,8 +63,7 @@ void main() {
 #endif
 
   init_encoder(ipl_gray_img, &enc_param, &qp_param, &pic_param, mb_size);
-
-  dec_mb = util.memset2DArray<int>(enc_param.num_mb, enc_param.mb_length);
+  init_decoder(ipl_gray_img, &dec_param, &pic_param, mb_size);
 
   set_picture_data(ipl_gray_img, enc_param.enc_data, mb_size);
 
@@ -77,8 +76,6 @@ void main() {
     transform_img(dct_output, enc_param.enc_data[i], enc_param.tu_size);
     set_scan_oder(zigzag_array, dct_output);
     quantize(zigzag_array, &qp_param, &enc_param);
-
-    //printf("%d\n", enc_param.blk_size);
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -153,14 +150,14 @@ void main() {
 
     //Maybe add secondary transformation to place more coefficients to the left top to prevent futher degradation
     //Utilize 4x4 as a tx for roi
-    dequantize(zigzag_array, qp_param, enc_param.tu_size);
+    dequantize(zigzag_array, qp_param, dec_param.tu_size);
     set_inverse_scan_oder(izigzag_array, zigzag_array);
-    inv_transform_img(dec_mb[i], (int*)izigzag_array, enc_param.tu_size);
+    inv_transform_img(dec_param.dec_data[i], (int*)izigzag_array, dec_param.tu_size);
   }
 
   util.getElapsedTime();
 
-  recon_picture_data(ipl_rec_img, dec_mb, enc_param.tu_size);
+  recon_picture_data(ipl_rec_img, dec_param.dec_data, dec_param.tu_size);
 
   double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
                                             (uint8_t*)ipl_gray_img->imageData,
