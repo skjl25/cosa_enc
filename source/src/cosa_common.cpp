@@ -55,7 +55,6 @@ inline int check_non_zero_all_block(int* src, int blk_size) {
     }
   }
   return non_zero_flag;
-
 }
 
 // check if the 3/4 of the block is 0 coefficients
@@ -81,7 +80,6 @@ inline int check_non_zero_half_block(int* src, int blk_size) {
     }
   }
   return non_zero_flag;
-
 }
 
 // return val is 0 : all of the block is zero
@@ -122,5 +120,4 @@ int get_size_of_mb_block(int* src, int blk_size) {
   } else {
     return blk_size*blk_size;
   }
-
 }

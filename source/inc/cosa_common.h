@@ -53,7 +53,6 @@ struct decoder_param{
   //quantize_param qp_param;
 };
 
-
 struct picture_param{
   int org_img_width;
   int org_img_height;

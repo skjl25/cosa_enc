@@ -26,16 +26,17 @@ DEALINGS IN THE SOFTWARE.
 
 #include "../inc/enc_config.h"
 
-void set_picture_data(IplImage* ipl_src_img, int** enc_mb, int tu_size) {
+void set_picture_data(IplImage* ipl_src_img, encoder_param* enc_param) {
   uint32_t mb_idx = 0;
   uint32_t src_offset = ipl_src_img->widthStep;
   char* src_img = ipl_src_img->imageData;
 
-  for (int j = 0; j < ipl_src_img->height; j += tu_size) {
-    for (int i = 0; i < ipl_src_img->width; i += tu_size) {
-      for (int k = 0; k < tu_size; k++) {
-        for (int l = 0; l < tu_size; l++) {
-          enc_mb[mb_idx][k * tu_size + l] = src_img[(src_offset * (j + k)) + (i + l)];
+  for (int j = 0; j < ipl_src_img->height; j += enc_param->tu_size) {
+    for (int i = 0; i < ipl_src_img->width; i += enc_param->tu_size) {
+      for (int k = 0; k < enc_param->tu_size; k++) {
+        for (int l = 0; l < enc_param->tu_size; l++) {
+          enc_param->enc_data[mb_idx][k * enc_param->tu_size + l] =
+                                       src_img[(src_offset * (j + k)) + (i + l)];
         }
       }
       mb_idx++;

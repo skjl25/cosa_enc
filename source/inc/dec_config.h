@@ -30,8 +30,7 @@ DEALINGS IN THE SOFTWARE.
 #include "dct.h"
 #include "cosa_common.h"
 
-
-void recon_picture_data(IplImage* ipl_src_img, int** enc_mb, int tu_size);
+void recon_picture_data(IplImage* ipl_dec_img, decoder_param* dec_param);
 void inv_transform_img(int* dst, int* src, int tu_size);
 void dequantize(int* src, quantize_param qp_param, int tu_size);
 void init_decoder(IplImage* src_img, decoder_param* dec_param,

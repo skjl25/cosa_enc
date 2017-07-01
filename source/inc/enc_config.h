@@ -33,7 +33,7 @@ DEALINGS IN THE SOFTWARE.
 #include "dct.h"
 #include "cosa_common.h"
 
-void set_picture_data(IplImage* ipl_src_img, int** enc_mb, int tu_size);
+void set_picture_data(IplImage* ipl_src_img, encoder_param* enc_param);
 
 void transform_img(int* dst, int* src, int tu_size);
 

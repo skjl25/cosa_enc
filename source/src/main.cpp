@@ -39,33 +39,32 @@ void main() {
   ImageTools image_tool;
 
   IplImage* ipl_rec_img = 0;
-  IplImage* ipl_gray_img = 0;
+  IplImage* ipl_org_gray_img = 0;
   IplImage* ipl_org_img = 0;
-
-  int dct_output[max_mb_size *max_mb_size];
-  int zigzag_array[max_mb_size *max_mb_size];
-  int izigzag_array[max_mb_size *max_mb_size];
-
-  int** dec_mb = 0;
 
   quantize_param qp_param;
   encoder_param enc_param;
   decoder_param dec_param;
   picture_param pic_param;
 
+  int dct_output[max_mb_size *max_mb_size];
+  int zigzag_array[max_mb_size *max_mb_size];
+  int izigzag_array[max_mb_size *max_mb_size];
+
   ipl_org_img = cvLoadImage(input_file_name, 1);
-  ipl_gray_img = cvCreateImage(cvSize(ipl_org_img->width, ipl_org_img->height), IPL_DEPTH_8U, 1);
+  ipl_org_gray_img = cvCreateImage(cvSize(ipl_org_img->width, ipl_org_img->height), IPL_DEPTH_8U, 1);
+  cvCvtColor(ipl_org_img, ipl_org_gray_img, CV_RGB2GRAY);
+
   ipl_rec_img = cvCreateImage(cvSize(ipl_org_img->width, ipl_org_img->height), IPL_DEPTH_8U, 1);
-  cvCvtColor(ipl_org_img, ipl_gray_img, CV_RGB2GRAY);
 
 #if SAVE_IMAGE
-  cvSaveImage(output_org_file_name, ipl_gray_img);
+  cvSaveImage(output_org_file_name, ipl_org_gray_img);
 #endif
 
-  init_encoder(ipl_gray_img, &enc_param, &qp_param, &pic_param, mb_size);
-  init_decoder(ipl_gray_img, &dec_param, &pic_param, mb_size);
+  init_encoder(ipl_org_gray_img, &enc_param, &qp_param, &pic_param, mb_size);
+  init_decoder(ipl_org_gray_img, &dec_param, &pic_param, mb_size);
 
-  set_picture_data(ipl_gray_img, enc_param.enc_data, mb_size);
+  set_picture_data(ipl_org_gray_img, &enc_param);
 
 #if RUN_INFINITE
   while(1){
@@ -157,12 +156,12 @@ void main() {
 
   util.getElapsedTime();
 
-  recon_picture_data(ipl_rec_img, dec_param.dec_data, dec_param.tu_size);
+  recon_picture_data(ipl_rec_img, &dec_param);
 
   double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
-                                            (uint8_t*)ipl_gray_img->imageData,
-                                            ipl_gray_img->width,
-                                            ipl_gray_img->height);
+                                            (uint8_t*)ipl_org_gray_img->imageData,
+                                            ipl_org_gray_img->width,
+                                            ipl_org_gray_img->height);
   printf("PSNR is %f\n", psnr);
 
 #if SAVE_IMAGE
