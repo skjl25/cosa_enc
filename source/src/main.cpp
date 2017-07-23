@@ -35,6 +35,39 @@ using namespace std;
 
 #define RUN_INFINITE 1
 void main() {
+
+  FILE *pInpVideo, *pTestOut;
+  unsigned char *pInp, *pYFrame, *pUFrame, *pVFrame;
+  int i;
+  int nHeight = 1080;
+  int nWidth = 1920;
+  int num_frames = 100;
+  int nSize = nHeight*nWidth;
+
+  pYFrame = (unsigned char*)malloc(sizeof(unsigned char)* nSize);
+  pUFrame = (unsigned char*)malloc(sizeof(unsigned char)*(nSize / 4));
+  pVFrame = (unsigned char*)malloc(sizeof(unsigned char)*(nSize / 4));
+
+  pInpVideo = fopen("./yuv/Beauty_1920x1080_120fps_420_8bit_YUV.yuv", "rb");
+  pTestOut = fopen("./output/decoded.yuv", "w");
+
+
+  if (!pInpVideo)
+    printf("error");
+
+  for (int i = 0; i < num_frames; i++) {
+    fread(pYFrame, sizeof(unsigned char), (nSize), pInpVideo);
+    fread(pUFrame, sizeof(unsigned char), (nSize) / 4, pInpVideo);
+    fread(pVFrame, sizeof(unsigned char), (nSize) / 4, pInpVideo);
+
+    fwrite(pYFrame, sizeof(unsigned char), (nSize), pTestOut);
+    fwrite(pUFrame, sizeof(unsigned char), (nSize) / 4, pTestOut);
+    fwrite(pVFrame, sizeof(unsigned char), (nSize) / 4, pTestOut);
+  }
+
+  fclose(pTestOut);
+  fclose(pInpVideo);
+  ////////////////////////////////////////////
   Utility util;
   ImageTools image_tool;
 
@@ -71,7 +104,7 @@ void main() {
 #endif
   util.startTimer();
 
-  for (uint32_t i = 0; i < enc_param.num_mb; i++) {
+  for (int i = 0; i < enc_param.num_mb; i++) {
     transform_img(dct_output, enc_param.enc_data[i], enc_param.tu_size);
     set_scan_oder(zigzag_array, dct_output);
     quantize(zigzag_array, &qp_param, &enc_param);
@@ -155,7 +188,6 @@ void main() {
   }
 
   util.getElapsedTime();
-
   recon_picture_data(ipl_rec_img, &dec_param);
 
   double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
