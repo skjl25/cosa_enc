@@ -35,40 +35,41 @@ using namespace std;
 
 #define RUN_INFINITE 1
 void main() {
+  Utility util;
 
   FILE *pInpVideo, *pTestOut;
-  unsigned char *pInp, *pYFrame, *pUFrame, *pVFrame;
-  int i;
+  unsigned char *pInp;
+  unsigned char **pYFrame, **pUFrame, **pVFrame;
   int nHeight = 1080;
   int nWidth = 1920;
   int num_frames = 100;
   int nSize = nHeight*nWidth;
 
-  pYFrame = (unsigned char*)malloc(sizeof(unsigned char)* nSize);
-  pUFrame = (unsigned char*)malloc(sizeof(unsigned char)*(nSize / 4));
-  pVFrame = (unsigned char*)malloc(sizeof(unsigned char)*(nSize / 4));
-
+  pYFrame = util.memset2DArray<unsigned char>(num_frames,nSize);
+  pUFrame = util.memset2DArray<unsigned char>(num_frames,nSize / 4);
+  pVFrame = util.memset2DArray<unsigned char>(num_frames,nSize/4);
+  
   pInpVideo = fopen("./yuv/Beauty_1920x1080_120fps_420_8bit_YUV.yuv", "rb");
   pTestOut = fopen("./output/decoded.yuv", "w");
 
-
-  if (!pInpVideo)
+  if (!pInpVideo) {
     printf("error");
+  }
+  for (int i = 0; i < num_frames; i++) {
+    fread(pYFrame[i], sizeof(unsigned char), (nSize), pInpVideo);
+    fread(pUFrame[i], sizeof(unsigned char), (nSize) / 4, pInpVideo);
+    fread(pVFrame[i], sizeof(unsigned char), (nSize) / 4, pInpVideo);
+  }
 
   for (int i = 0; i < num_frames; i++) {
-    fread(pYFrame, sizeof(unsigned char), (nSize), pInpVideo);
-    fread(pUFrame, sizeof(unsigned char), (nSize) / 4, pInpVideo);
-    fread(pVFrame, sizeof(unsigned char), (nSize) / 4, pInpVideo);
-
-    fwrite(pYFrame, sizeof(unsigned char), (nSize), pTestOut);
-    fwrite(pUFrame, sizeof(unsigned char), (nSize) / 4, pTestOut);
-    fwrite(pVFrame, sizeof(unsigned char), (nSize) / 4, pTestOut);
+    fwrite(pYFrame[i], sizeof(unsigned char), (nSize), pTestOut);
+    fwrite(pUFrame[i], sizeof(unsigned char), (nSize) / 4, pTestOut);
+    fwrite(pVFrame[i], sizeof(unsigned char), (nSize) / 4, pTestOut);
   }
 
   fclose(pTestOut);
   fclose(pInpVideo);
   ////////////////////////////////////////////
-  Utility util;
   ImageTools image_tool;
 
   IplImage* ipl_rec_img = 0;
