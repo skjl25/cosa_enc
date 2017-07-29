@@ -45,6 +45,12 @@
     <ClCompile Include="..\..\utility\src\camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\src\cosa_dec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\src\cosa_enc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\inc\mat2.h">
@@ -96,6 +102,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\utility\inc\typedef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\inc\cosa_dec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\inc\cosa_enc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

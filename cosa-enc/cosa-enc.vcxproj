@@ -92,6 +92,8 @@
     <ClCompile Include="..\..\utility\src\img_tools.cpp" />
     <ClCompile Include="..\..\utility\src\utility.cpp" />
     <ClCompile Include="..\source\src\cosa_common.cpp" />
+    <ClCompile Include="..\source\src\cosa_dec.cpp" />
+    <ClCompile Include="..\source\src\cosa_enc.cpp" />
     <ClCompile Include="..\source\src\cvideo.cpp" />
     <ClCompile Include="..\source\src\dct.cpp" />
     <ClCompile Include="..\source\src\dec_config.cpp" />
@@ -105,6 +107,8 @@
     <ClInclude Include="..\..\utility\inc\typedef.h" />
     <ClInclude Include="..\..\utility\inc\utility.h" />
     <ClInclude Include="..\source\inc\cosa_common.h" />
+    <ClInclude Include="..\source\inc\cosa_dec.h" />
+    <ClInclude Include="..\source\inc\cosa_enc.h" />
     <ClInclude Include="..\source\inc\cvideo.h" />
     <ClInclude Include="..\source\inc\dct.h" />
     <ClInclude Include="..\source\inc\dec_config.h" />
