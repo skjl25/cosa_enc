@@ -36,40 +36,6 @@ using namespace std;
 #define RUN_INFINITE 1
 void main() {
   Utility util;
-
-  FILE *pInpVideo, *pTestOut;
-  unsigned char *pInp;
-  unsigned char **pYFrame, **pUFrame, **pVFrame;
-  int nHeight = 1080;
-  int nWidth = 1920;
-  int num_frames = 100;
-  int nSize = nHeight*nWidth;
-
-  pYFrame = util.memset2DArray<unsigned char>(num_frames,nSize);
-  pUFrame = util.memset2DArray<unsigned char>(num_frames,nSize / 4);
-  pVFrame = util.memset2DArray<unsigned char>(num_frames,nSize/4);
-  
-  pInpVideo = fopen("./yuv/Beauty_1920x1080_120fps_420_8bit_YUV.yuv", "rb");
-  pTestOut = fopen("./output/decoded.yuv", "w");
-
-  if (!pInpVideo) {
-    printf("error");
-  }
-  for (int i = 0; i < num_frames; i++) {
-    fread(pYFrame[i], sizeof(unsigned char), (nSize), pInpVideo);
-    fread(pUFrame[i], sizeof(unsigned char), (nSize) / 4, pInpVideo);
-    fread(pVFrame[i], sizeof(unsigned char), (nSize) / 4, pInpVideo);
-  }
-
-  for (int i = 0; i < num_frames; i++) {
-    fwrite(pYFrame[i], sizeof(unsigned char), (nSize), pTestOut);
-    fwrite(pUFrame[i], sizeof(unsigned char), (nSize) / 4, pTestOut);
-    fwrite(pVFrame[i], sizeof(unsigned char), (nSize) / 4, pTestOut);
-  }
-
-  fclose(pTestOut);
-  fclose(pInpVideo);
-  ////////////////////////////////////////////
   ImageTools image_tool;
 
   IplImage* ipl_rec_img = 0;
@@ -81,15 +47,25 @@ void main() {
   decoder_param dec_param;
   picture_param pic_param;
 
+  int pic_width = 1920;
+  int pic_height = 1080;
+  int num_frames = 100;
+
   int dct_output[max_mb_size *max_mb_size];
   int zigzag_array[max_mb_size *max_mb_size];
   int izigzag_array[max_mb_size *max_mb_size];
 
+  //--------------------------------------------------------------------------
+  yuv_data src;
+  image_tool.load_yuv_data(&src, input_yuv_name, num_frames, pic_height, pic_width);
+  image_tool.write_yuv_data(&src, output_yuv_name);
+
+  //--------------------------------------------------------------------------
   ipl_org_img = cvLoadImage(input_file_name, 1);
   ipl_org_gray_img = cvCreateImage(cvSize(ipl_org_img->width, ipl_org_img->height), IPL_DEPTH_8U, 1);
   cvCvtColor(ipl_org_img, ipl_org_gray_img, CV_RGB2GRAY);
-
   ipl_rec_img = cvCreateImage(cvSize(ipl_org_img->width, ipl_org_img->height), IPL_DEPTH_8U, 1);
+  //--------------------------------------------------------------------------
 
 #if SAVE_IMAGE
   cvSaveImage(output_org_file_name, ipl_org_gray_img);
@@ -110,7 +86,7 @@ void main() {
     set_scan_oder(zigzag_array, dct_output);
     quantize(zigzag_array, &qp_param, &enc_param);
 
-    ///////////////////////////////////////////////////////////////////////////
+    //--------------------------------------------------------------------------
 
 #if printf_en
     for (int k = 0; k < mb_size; k++) {
@@ -179,7 +155,6 @@ void main() {
 #endif
 
     ///////////////////////////////////////////////////////////////////////////
-
 
     //Maybe add secondary transformation to place more coefficients to the left top to prevent futher degradation
     //Utilize 4x4 as a tx for roi

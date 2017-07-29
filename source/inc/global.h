@@ -49,8 +49,10 @@ DEALINGS IN THE SOFTWARE.
 #define image_sequence          130
 
 #define input_file_name "./input/1920x1024_test.jpg"
+#define input_yuv_name "./yuv/Beauty_1920x1080_120fps_420_8bit_YUV.yuv"
 
 #define output_org_file_name "./output/fdct_org.pgm"
+#define output_yuv_name "./output/decoded.yuv"
 
 // #define input_file_name "./input/fhd_test_10.jpg"
 // #define input_file_name "./input/fhd_test_9.jpg"

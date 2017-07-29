@@ -58,6 +58,7 @@ struct picture_param{
   int org_img_height;
 };
 
+
 int find_max(int* src, int blk_size);
 int find_min(int* src, int blk_size);
 
