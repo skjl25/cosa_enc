@@ -93,6 +93,3 @@ void init_decoder(IplImage* src_img, decoder_param* dec_param,
   init_decoder_param(pic_param, dec_param, tu_size);
 }
 
-int* decode_blk(decoder_param* enc_param, quantize_param* qp_param) {
-  return 0;
-}

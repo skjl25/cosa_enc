@@ -59,7 +59,6 @@ void main() {
   yuv_data src;
   image_tool.load_yuv_data(&src, input_yuv_name, num_frames, pic_height, pic_width);
   image_tool.write_yuv_data(&src, output_yuv_name);
-
   //--------------------------------------------------------------------------
   ipl_org_img = cvLoadImage(input_file_name, 1);
   ipl_org_gray_img = cvCreateImage(cvSize(ipl_org_img->width, ipl_org_img->height), IPL_DEPTH_8U, 1);
@@ -77,103 +76,102 @@ void main() {
   set_picture_data(ipl_org_gray_img, &enc_param);
 
 #if RUN_INFINITE
-  while(1){
+  while (1) {
 #endif
-  util.startTimer();
+    util.startTimer();
 
-  for (int i = 0; i < enc_param.num_mb; i++) {
-    transform_img(dct_output, enc_param.enc_data[i], enc_param.tu_size);
-    set_scan_oder(zigzag_array, dct_output);
-    quantize(zigzag_array, &qp_param, &enc_param);
+    for (int i = 0; i < enc_param.num_mb; i++) {
+      transform_img(dct_output, enc_param.enc_data[i], enc_param.tu_size);
+      set_scan_oder(zigzag_array, dct_output);
+      quantize(zigzag_array, &qp_param, &enc_param);
 
-    //--------------------------------------------------------------------------
-
+      //--------------------------------------------------------------------------
 #if printf_en
-    for (int k = 0; k < mb_size; k++) {
-      for (int l = 0; l < mb_size; l++) {
-        printf("%d ", zigzag_array[l + k*mb_size]);
+      for (int k = 0; k < mb_size; k++) {
+        for (int l = 0; l < mb_size; l++) {
+          printf("%d ", zigzag_array[l + k*mb_size]);
+        }
+        printf("\n");
       }
-      printf("\n");
-    }
-    printf("---------------------\n");
+      printf("---------------------\n");
 
 
-    int cnt_freq_coef_array[max_mb_size *max_mb_size];
-    int cnt_freq_coef_array_temp[max_mb_size *max_mb_size];
-    int max_coef = 0;
-    int max_coef_idx = 0;
-    int most_freq_coef = 0;
+      int cnt_freq_coef_array[max_mb_size *max_mb_size];
+      int cnt_freq_coef_array_temp[max_mb_size *max_mb_size];
+      int max_coef = 0;
+      int max_coef_idx = 0;
+      int most_freq_coef = 0;
 
-    for (int j = 0; j < mb_size*mb_size; j++) {
-      cnt_freq_coef_array[j] = zigzag_array[j];
-      cnt_freq_coef_array_temp[j] = 0;
+      for (int j = 0; j < mb_size*mb_size; j++) {
+        cnt_freq_coef_array[j] = zigzag_array[j];
+        cnt_freq_coef_array_temp[j] = 0;
+        max_coef = 0;
+      }
+
       max_coef = 0;
-    }
-
-    max_coef = 0;
-    for (int j = 0; j < mb_size*mb_size; j++) {
-      if (cnt_freq_coef_array[j] < 255) {
-        for (int k = j + 1; k < mb_size*mb_size; k++) {
-          if (cnt_freq_coef_array[j] == cnt_freq_coef_array[k]) {
-            cnt_freq_coef_array[k] = 1000;
-            cnt_freq_coef_array_temp[j] = cnt_freq_coef_array_temp[j] + 1;
+      for (int j = 0; j < mb_size*mb_size; j++) {
+        if (cnt_freq_coef_array[j] < 255) {
+          for (int k = j + 1; k < mb_size*mb_size; k++) {
+            if (cnt_freq_coef_array[j] == cnt_freq_coef_array[k]) {
+              cnt_freq_coef_array[k] = 1000;
+              cnt_freq_coef_array_temp[j] = cnt_freq_coef_array_temp[j] + 1;
+            }
+          }
+          if (max_coef < cnt_freq_coef_array_temp[j]) {
+            max_coef = cnt_freq_coef_array_temp[j];
+            max_coef_idx = j;
           }
         }
-        if (max_coef < cnt_freq_coef_array_temp[j]) {
-          max_coef = cnt_freq_coef_array_temp[j];
-          max_coef_idx = j;
+      }
+
+      most_freq_coef = zigzag_array[max_coef_idx];
+
+      for (int k = 0; k < mb_size; k++) {
+        for (int l = 0; l < mb_size; l++) {
+          printf("%d ", cnt_freq_coef_array[l + k*mb_size]);
         }
+        printf("\n");
       }
-    }
+      printf("---------------------\n");
 
-    most_freq_coef=zigzag_array[max_coef_idx];
-
-    for(int k=0;k<mb_size;k++) {
-      for (int l = 0; l < mb_size;l++) {
-        printf("%d ",cnt_freq_coef_array[l+k*mb_size]);
+      for (int k = 0; k < mb_size; k++) {
+        for (int l = 0; l < mb_size; l++) {
+          printf("%d ", cnt_freq_coef_array_temp[l + k*mb_size]);
+        }
+        printf("\n");
       }
-      printf("\n");
-    }
-    printf("---------------------\n");
+      printf("most frequent coef : %d\n", zigzag_array[max_coef_idx]);
+      getchar();
 
-    for (int k = 0; k < mb_size; k++) {
-      for (int l = 0; l < mb_size; l++) {
-        printf("%d ", cnt_freq_coef_array_temp[l + k*mb_size]);
+      for (int k = 0; k < mb_size; k++) {
+        for (int l = 0; l < mb_size; l++) {
+          printf("%d ", zigzag_array[l + k*mb_size] - most_freq_coef);
+        }
+        printf("\n");
       }
-      printf("\n");
-    }
-    printf("most frequent coef : %d\n", zigzag_array[max_coef_idx]);
-    getchar();
-
-    for (int k = 0; k < mb_size; k++) {
-      for (int l = 0; l < mb_size; l++) {
-        printf("%d ", zigzag_array[l + k*mb_size]-most_freq_coef);
-      }
-      printf("\n");
-    }
-    getchar();
+      getchar();
 #endif
+      //--------------------------------------------------------------------------
 
-    ///////////////////////////////////////////////////////////////////////////
 
-    //Maybe add secondary transformation to place more coefficients to the left top to prevent futher degradation
-    //Utilize 4x4 as a tx for roi
-    dequantize(zigzag_array, qp_param, dec_param.tu_size);
-    set_inverse_scan_oder(izigzag_array, zigzag_array);
-    inv_transform_img(dec_param.dec_data[i], (int*)izigzag_array, dec_param.tu_size);
-  }
+      //Maybe add secondary transformation to place more coefficients to the left top to prevent futher degradation
+      //Utilize 4x4 as a tx for roi
+      dequantize(zigzag_array, qp_param, dec_param.tu_size);
+      set_inverse_scan_oder(izigzag_array, zigzag_array);
+      inv_transform_img(dec_param.dec_data[i], (int*)izigzag_array, dec_param.tu_size);
+    }
 
-  util.getElapsedTime();
-  recon_picture_data(ipl_rec_img, &dec_param);
+    util.getElapsedTime();
+    recon_picture_data(ipl_rec_img, &dec_param);
 
-  double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
-                                            (uint8_t*)ipl_org_gray_img->imageData,
-                                            ipl_org_gray_img->width,
-                                            ipl_org_gray_img->height);
-  printf("PSNR is %f\n", psnr);
+    double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
+                                              (uint8_t*)ipl_org_gray_img->imageData,
+                                              ipl_org_gray_img->width,
+                                              ipl_org_gray_img->height);
+    printf("PSNR is %f\n", psnr);
 
 #if SAVE_IMAGE
-  cvSaveImage("./output/fdct_result.pgm", ipl_rec_img);
+    cvSaveImage("./output/fdct_result.pgm", ipl_rec_img);
 #endif
 
 #if RUN_INFINITE

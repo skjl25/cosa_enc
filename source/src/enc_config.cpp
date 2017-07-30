@@ -126,6 +126,3 @@ void init_encoder(IplImage* src_img, encoder_param* enc_param,
   init_qp_param(src_img, qp_param);
 }
 
-int* encode_blk(encoder_param* enc_param, quantize_param* qp_param) {
-  return 0;
-}
