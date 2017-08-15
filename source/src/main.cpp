@@ -85,7 +85,7 @@ void main() {
       set_scan_oder(zigzag_array, dct_output);
       quantize(zigzag_array, &qp_param, &enc_param);
 
-      //--------------------------------------------------------------------------
+      //------------------------------------------------------------------------
 #if printf_en
       for (int k = 0; k < mb_size; k++) {
         for (int l = 0; l < mb_size; l++) {
@@ -151,7 +151,7 @@ void main() {
       }
       getchar();
 #endif
-      //--------------------------------------------------------------------------
+      //------------------------------------------------------------------------
 
 
       //Maybe add secondary transformation to place more coefficients to the left top to prevent futher degradation
