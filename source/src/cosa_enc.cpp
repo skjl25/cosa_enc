@@ -25,8 +25,15 @@ DEALINGS IN THE SOFTWARE.
 
 #include "../inc/cosa_enc.h"
 int dct_output[max_mb_size *max_mb_size];
+//int zigzag_array[max_mb_size *max_mb_size];
 
-void encode_picture(int* dst, encoder_param* enc_param, quantize_param* qp_param) {
-  //transform_img(dct_output, enc_param->enc_data[i], enc_param->tu_size);
-  //set_scan_oder(dst, dct_output);
+void encode_picture(encoder_param* enc_param, quantize_param* qp_param) {
+	for(int i=0;i<enc_param->num_mb;i++) {
+		//transform_img(dct_output, enc_param->src_data[i], enc_param->tu_size);
+		//set_scan_oder(dst, dct_output);
+		//quantize(zigzag_array, &qp_param, &enc_param);
+		transform_img(dct_output, enc_param->src_data[i], enc_param->tu_size);
+		set_scan_oder(enc_param->enc_data[i], dct_output);
+		quantize(enc_param->enc_data[i], enc_param);
+	}
 }

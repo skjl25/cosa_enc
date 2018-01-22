@@ -38,7 +38,7 @@ void set_picture_data(IplImage* ipl_src_img, encoder_param* enc_param);
 void transform_img(int* dst, int* src, int tu_size);
 
 void get_quantize_parameter(int* src, quantize_param* qp_param, int tu_size);
-void quantize(int* src, quantize_param* qp_param, encoder_param* enc_param);
+void quantize(int* src, encoder_param* enc_param);
 
 void init_encoder(IplImage* src_img, encoder_param* enc_param,
                     quantize_param* qp_param, picture_param* pic_param,

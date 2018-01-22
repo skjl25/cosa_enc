@@ -35,7 +35,7 @@ void set_picture_data(IplImage* ipl_src_img, encoder_param* enc_param) {
     for (int i = 0; i < ipl_src_img->width; i += enc_param->tu_size) {
       for (int k = 0; k < enc_param->tu_size; k++) {
         for (int l = 0; l < enc_param->tu_size; l++) {
-          enc_param->enc_data[mb_idx][k * enc_param->tu_size + l] =
+          enc_param->src_data[mb_idx][k * enc_param->tu_size + l] =
                                        src_img[(src_offset * (j + k)) + (i + l)];
         }
       }
@@ -87,11 +87,10 @@ inline void quantize_data(int* src, quantize_param* qp_param, int tu_size) {
   }
 }
 
-void quantize(int* src, quantize_param* qp_param, encoder_param* enc_param) {
+void quantize(int* src, encoder_param* enc_param) {
   int tu_size = enc_param->tu_size;
-
-  get_quantize_parameter(src, qp_param, tu_size);
-  quantize_data(src, qp_param, tu_size);
+  get_quantize_parameter(src, &enc_param->qp_param, tu_size);
+  quantize_data(src, &enc_param->qp_param, tu_size);
   enc_param->blk_size = get_size_of_mb_block(src, tu_size);
 
 }
@@ -102,15 +101,19 @@ void set_picture_parameter(IplImage* src_img, picture_param* pic_param) {
 }
 
 void init_encoder_param(picture_param* pic_param, encoder_param* enc_param,
-                        int tu_size) {
+                        int tu_size, quantize_param* qp_param_in) {
   Utility util;
   enc_param->blk_size = 0;
   enc_param->tu_size = tu_size;
   enc_param->num_mb = (pic_param->org_img_height / tu_size)*
                       (pic_param->org_img_width / tu_size);
   enc_param->mb_length = tu_size * tu_size;
-  enc_param->enc_data = util.memset2DArray<int>(enc_param->num_mb,
+  enc_param->src_data = util.memset2DArray<int>(enc_param->num_mb,
                                                 enc_param->mb_length);
+  enc_param->enc_data = util.memset2DArray<int>(enc_param->num_mb,
+									        	enc_param->tu_size*enc_param->tu_size);
+  enc_param->qp_param.intermediate_val = qp_param_in->intermediate_val;
+  enc_param->qp_param.reduce_ratio = qp_param_in->reduce_ratio;
 }
 
 void init_qp_param(IplImage* src_img, quantize_param* qp_param) {
@@ -122,7 +125,7 @@ void init_encoder(IplImage* src_img, encoder_param* enc_param,
                   quantize_param* qp_param, picture_param* pic_param,
                   int tu_size) {
   set_picture_parameter(src_img, pic_param);
-  init_encoder_param(pic_param, enc_param, tu_size);
   init_qp_param(src_img, qp_param);
+  init_encoder_param(pic_param, enc_param, tu_size, qp_param);
 }
 

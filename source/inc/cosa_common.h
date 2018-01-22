@@ -38,9 +38,11 @@ struct quantize_param{
 struct encoder_param{
   int tu_size;
   int blk_size;
+  int** src_data;
   int** enc_data;
   int num_mb;
   int mb_length;
+  quantize_param qp_param;
   //quantize_param qp_param;
 };
 
