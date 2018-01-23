@@ -43,7 +43,6 @@ void main() {
   IplImage* ipl_org_gray_img = 0;
   IplImage* ipl_org_img = 0;
 
-  quantize_param qp_param;
   encoder_param enc_param;
   decoder_param dec_param;
   picture_param pic_param;
@@ -71,95 +70,89 @@ void main() {
   cvSaveImage(output_org_file_name, ipl_org_gray_img);
 #endif
 
-  init_encoder(ipl_org_gray_img, &enc_param, &qp_param, &pic_param, mb_size);
+  init_encoder(ipl_org_gray_img, &enc_param, &pic_param, mb_size);
   init_decoder(ipl_org_gray_img, &dec_param, &pic_param, mb_size);
-
   set_picture_data(ipl_org_gray_img, &enc_param);
 
 #if RUN_INFINITE
   while (1) {
 #endif
     util.startTimer();
-	//encode_picture(&enc_param, &qp_param);
 
-	for (int i = 0; i < enc_param.num_mb; i++) {
-		transform_img(dct_output, enc_param.src_data[i], enc_param.tu_size);
-		set_scan_oder(enc_param.enc_data[i], dct_output);
-		quantize(enc_param.enc_data[i], &enc_param);
+	encode_picture(&enc_param);
 
-		//------------------------------------------------------------------------
+	//------------------------------------------------------------------------
 #if printf_en
-		for (int k = 0; k < mb_size; k++) {
-			for (int l = 0; l < mb_size; l++) {
-				printf("%d ", zigzag_array[l + k * mb_size]);
-			}
-			printf("\n");
+	for (int k = 0; k < mb_size; k++) {
+		for (int l = 0; l < mb_size; l++) {
+			printf("%d ", zigzag_array[l + k * mb_size]);
 		}
-		printf("---------------------\n");
+		printf("\n");
+	}
+	printf("---------------------\n");
 
 
-		int cnt_freq_coef_array[max_mb_size *max_mb_size];
-		int cnt_freq_coef_array_temp[max_mb_size *max_mb_size];
-		int max_coef = 0;
-		int max_coef_idx = 0;
-		int most_freq_coef = 0;
+	int cnt_freq_coef_array[max_mb_size *max_mb_size];
+	int cnt_freq_coef_array_temp[max_mb_size *max_mb_size];
+	int max_coef = 0;
+	int max_coef_idx = 0;
+	int most_freq_coef = 0;
 
-		for (int j = 0; j < mb_size*mb_size; j++) {
-			cnt_freq_coef_array[j] = zigzag_array[j];
-			cnt_freq_coef_array_temp[j] = 0;
-			max_coef = 0;
-		}
-
+	for (int j = 0; j < mb_size*mb_size; j++) {
+		cnt_freq_coef_array[j] = zigzag_array[j];
+		cnt_freq_coef_array_temp[j] = 0;
 		max_coef = 0;
-		for (int j = 0; j < mb_size*mb_size; j++) {
-			if (cnt_freq_coef_array[j] < 255) {
-				for (int k = j + 1; k < mb_size*mb_size; k++) {
-					if (cnt_freq_coef_array[j] == cnt_freq_coef_array[k]) {
-						cnt_freq_coef_array[k] = 1000;
-						cnt_freq_coef_array_temp[j] = cnt_freq_coef_array_temp[j] + 1;
-					}
-				}
-				if (max_coef < cnt_freq_coef_array_temp[j]) {
-					max_coef = cnt_freq_coef_array_temp[j];
-					max_coef_idx = j;
+	}
+
+	max_coef = 0;
+	for (int j = 0; j < mb_size*mb_size; j++) {
+		if (cnt_freq_coef_array[j] < 255) {
+			for (int k = j + 1; k < mb_size*mb_size; k++) {
+				if (cnt_freq_coef_array[j] == cnt_freq_coef_array[k]) {
+					cnt_freq_coef_array[k] = 1000;
+					cnt_freq_coef_array_temp[j] = cnt_freq_coef_array_temp[j] + 1;
 				}
 			}
-		}
-
-		most_freq_coef = zigzag_array[max_coef_idx];
-
-		for (int k = 0; k < mb_size; k++) {
-			for (int l = 0; l < mb_size; l++) {
-				printf("%d ", cnt_freq_coef_array[l + k * mb_size]);
+			if (max_coef < cnt_freq_coef_array_temp[j]) {
+				max_coef = cnt_freq_coef_array_temp[j];
+				max_coef_idx = j;
 			}
-			printf("\n");
 		}
-		printf("---------------------\n");
+	}
 
-		for (int k = 0; k < mb_size; k++) {
-			for (int l = 0; l < mb_size; l++) {
-				printf("%d ", cnt_freq_coef_array_temp[l + k * mb_size]);
-			}
-			printf("\n");
-		}
-		printf("most frequent coef : %d\n", zigzag_array[max_coef_idx]);
-		getchar();
+	most_freq_coef = zigzag_array[max_coef_idx];
 
-		for (int k = 0; k < mb_size; k++) {
-			for (int l = 0; l < mb_size; l++) {
-				printf("%d ", zigzag_array[l + k * mb_size] - most_freq_coef);
-			}
-			printf("\n");
+	for (int k = 0; k < mb_size; k++) {
+		for (int l = 0; l < mb_size; l++) {
+			printf("%d ", cnt_freq_coef_array[l + k * mb_size]);
 		}
-		getchar();
+		printf("\n");
+	}
+	printf("---------------------\n");
+
+	for (int k = 0; k < mb_size; k++) {
+		for (int l = 0; l < mb_size; l++) {
+			printf("%d ", cnt_freq_coef_array_temp[l + k * mb_size]);
+		}
+		printf("\n");
+	}
+	printf("most frequent coef : %d\n", zigzag_array[max_coef_idx]);
+	getchar();
+
+	for (int k = 0; k < mb_size; k++) {
+		for (int l = 0; l < mb_size; l++) {
+			printf("%d ", zigzag_array[l + k * mb_size] - most_freq_coef);
+		}
+		printf("\n");
+	}
+	getchar();
 #endif
-		//------------------------------------------------------------------------
-		//for (int i = 0; i < enc_param.num_mb; i++) {
-
-
+	//------------------------------------------------------------------------
+	
+	for (int i = 0; i < enc_param.num_mb; i++) {
 		//Maybe add secondary transformation to place more coefficients to the left top to prevent futher degradation
 		//Utilize 4x4 as a tx for roi
-		dequantize(enc_param.enc_data[i], enc_param.qp_param, dec_param.tu_size);
+		dequantize(enc_param.enc_data[i], enc_param.qp_param[i], dec_param.tu_size);
 		set_inverse_scan_oder(izigzag_array, enc_param.enc_data[i]);
 		inv_transform_img(dec_param.dec_data[i], (int*)izigzag_array, dec_param.tu_size);
 	}

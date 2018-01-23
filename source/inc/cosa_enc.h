@@ -28,4 +28,4 @@ DEALINGS IN THE SOFTWARE.
 #include "cosa_common.h"
 #include "enc_config.h"
 
-void encode_picture(encoder_param* enc_param, quantize_param* qp_param);
+void encode_picture(encoder_param* enc_param);
