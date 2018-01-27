@@ -98,10 +98,6 @@ void set_picture_parameter(IplImage* src_img, picture_param* pic_param) {
   pic_param->org_img_height= src_img->height;
   pic_param->org_img_width= src_img->width;
 }
-void init_qp_param(quantize_param* qp_param) {
-	qp_param->intermediate_val = 0;
-	qp_param->reduce_ratio = 0;
-}
 
 
 void init_encoder_param(picture_param* pic_param, encoder_param* enc_param,

@@ -25,6 +25,15 @@ DEALINGS IN THE SOFTWARE.
 
 #include "../inc/cosa_dec.h"
 
-void decode_picture(decoder_param* enc_param, quantize_param* qp_param) {
+int izigzag_array[max_mb_size *max_mb_size];
 
+
+void decode_picture(decoder_param* dec_param) {
+	for (int i = 0; i < dec_param->num_mb; i++) {
+		//Maybe add secondary transformation to place more coefficients to the left top to prevent futher degradation
+		//Utilize 4x4 as a tx for roi
+		dequantize(dec_param->dec_data[i], dec_param->qp_param[i], dec_param->tu_size);
+		set_inverse_scan_oder(izigzag_array, dec_param->dec_data[i]);
+		inv_transform_img(dec_param->recon_data[i], (int*)izigzag_array, dec_param->tu_size);
+	}
 }

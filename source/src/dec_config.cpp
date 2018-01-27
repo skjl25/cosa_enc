@@ -35,7 +35,7 @@ void recon_picture_data(IplImage* ipl_dec_img, decoder_param* dec_param) {
       for (int k = 0; k < dec_param->tu_size; k++) {
         for (int l = 0; l < dec_param->tu_size; l++) {
           dec_img[(dst_offset * (j + k)) + (i + l)] = 
-            (char)dec_param->dec_data[mb_idx][(k * dec_param->tu_size) + l];
+            (char)dec_param->recon_data[mb_idx][(k * dec_param->tu_size) + l];
         }
       }
       mb_idx++;
@@ -84,8 +84,17 @@ void init_decoder_param(picture_param* pic_param, decoder_param* dec_param,
   dec_param->num_mb = (pic_param->org_img_height / tu_size)*
                       (pic_param->org_img_width / tu_size);
   dec_param->mb_length = tu_size * tu_size;
-  dec_param->dec_data = util.memset2DArray<int>(dec_param->num_mb,
+  dec_param->recon_data = util.memset2DArray<int>(dec_param->num_mb,
                                                 dec_param->mb_length);
+  dec_param->dec_data = util.memset2DArray<int>(dec_param->num_mb,
+										   	    dec_param->mb_length);
+
+  dec_param->qp_param = (struct quantize_param*)malloc(sizeof(quantize_param) * dec_param->num_mb);
+
+  for (int i = 0; i < dec_param->num_mb; i++) {
+	  init_qp_param(&dec_param->qp_param[i]);
+  }
+
 }
 
 void init_decoder(IplImage* src_img, decoder_param* dec_param, 

@@ -107,6 +107,11 @@ inline int check_zero_by_partition_block(int* src, int blk_size) {
   }
 }
 
+void init_qp_param(quantize_param* qp_param) {
+	qp_param->intermediate_val = 0;
+	qp_param->reduce_ratio = 0;
+}
+
 int get_size_of_mb_block(int* src, int blk_size) {
   int non_zero_flag_val = 0;
   non_zero_flag_val = check_zero_by_partition_block(src, blk_size);

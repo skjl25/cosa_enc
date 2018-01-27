@@ -28,4 +28,4 @@ DEALINGS IN THE SOFTWARE.
 #include "cosa_common.h"
 #include "dec_config.h"
 
-void decode_picture(decoder_param* enc_param, quantize_param* qp_param);
+void decode_picture(decoder_param* dec_param);

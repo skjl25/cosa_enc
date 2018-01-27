@@ -30,6 +30,7 @@ DEALINGS IN THE SOFTWARE.
 #include "../inc/dec_config.h"
 #include "../inc/cosa_common.h"
 #include "../inc/cosa_enc.h"
+#include "../inc/cosa_dec.h"
 
 #pragma warning(disable:4819)
 using namespace std;
@@ -148,19 +149,20 @@ void main() {
 	getchar();
 #endif
 	//------------------------------------------------------------------------
-	
-	for (int i = 0; i < enc_param.num_mb; i++) {
-		//Maybe add secondary transformation to place more coefficients to the left top to prevent futher degradation
-		//Utilize 4x4 as a tx for roi
-		dequantize(enc_param.enc_data[i], enc_param.qp_param[i], dec_param.tu_size);
-		set_inverse_scan_oder(izigzag_array, enc_param.enc_data[i]);
-		inv_transform_img(dec_param.dec_data[i], (int*)izigzag_array, dec_param.tu_size);
-	}
+
+	//------------------------------------------------------------------------
+	//Pointing dec_param to enc_param
+	dec_param.dec_data = enc_param.enc_data;
+	dec_param.qp_param = enc_param.qp_param;
+	dec_param.num_mb = enc_param.num_mb;
+	//------------------------------------------------------------------------
+
+	decode_picture(&dec_param);
 
     util.getElapsedTime();
     recon_picture_data(ipl_rec_img, &dec_param);
-
-    double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
+	
+	double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
                                               (uint8_t*)ipl_org_gray_img->imageData,
                                               ipl_org_gray_img->width,
                                               ipl_org_gray_img->height);

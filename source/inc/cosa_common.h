@@ -49,8 +49,10 @@ struct decoder_param{
   int tu_size;
   int blk_size;
   int** dec_data;
+  int** recon_data;
   int num_mb;
   int mb_length;
+  quantize_param* qp_param;
   //quantize_param qp_param;
 };
 
@@ -68,6 +70,7 @@ int check_non_zero_quarter_block(int* src, int blk_size);
 int check_non_zero_half_block(int* src, int blk_size);
 int check_zero_by_partition_block(int* src, int blk_size);
 int get_size_of_mb_block(int* src, int blk_size);
+void init_qp_param(quantize_param* qp_param);
 
 
 #endif /* COSA_COMMON_H_ */
