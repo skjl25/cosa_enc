@@ -155,10 +155,11 @@ void main() {
 	dec_param.dec_data = enc_param.enc_data;
 	dec_param.qp_param = enc_param.qp_param;
 	dec_param.num_mb = enc_param.num_mb;
+	dec_param.roi_flag = enc_param.roi_flag;
+	dec_param.delivery_ratio = enc_param.delivery_ratio;
 	//------------------------------------------------------------------------
 
 	decode_picture(&dec_param);
-
     util.getElapsedTime();
     recon_picture_data(ipl_rec_img, &dec_param);
 	

@@ -29,7 +29,7 @@ int dct_output[max_mb_size *max_mb_size];
 void encode_picture(encoder_param* enc_param) {
 	for (int i = 0; i < enc_param->num_mb; i++) {
 		transform_img(dct_output, enc_param->src_data[i], enc_param->tu_size);
-		set_scan_oder(enc_param->enc_data[i], dct_output);
+		set_scan_oder(enc_param->enc_data[i], dct_output, enc_param->delivery_ratio);
 		quantize(enc_param->enc_data[i], enc_param, &enc_param->qp_param[i]);
 	}
 }

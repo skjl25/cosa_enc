@@ -84,12 +84,14 @@ void init_decoder_param(picture_param* pic_param, decoder_param* dec_param,
   dec_param->num_mb = (pic_param->org_img_height / tu_size)*
                       (pic_param->org_img_width / tu_size);
   dec_param->mb_length = tu_size * tu_size;
+  dec_param->roi_flag = util.memset1DArray<int>(dec_param->mb_length);
+
   dec_param->recon_data = util.memset2DArray<int>(dec_param->num_mb,
                                                 dec_param->mb_length);
   dec_param->dec_data = util.memset2DArray<int>(dec_param->num_mb,
 										   	    dec_param->mb_length);
 
-  dec_param->qp_param = (struct quantize_param*)malloc(sizeof(quantize_param) * dec_param->num_mb);
+  dec_param->qp_param = util.memset1DArray<quantize_param>(dec_param->num_mb);
 
   for (int i = 0; i < dec_param->num_mb; i++) {
 	  init_qp_param(&dec_param->qp_param[i]);

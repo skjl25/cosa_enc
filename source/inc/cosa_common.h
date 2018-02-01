@@ -42,6 +42,8 @@ struct encoder_param{
   int** enc_data;
   int num_mb;
   int mb_length;
+  int* roi_flag;
+  double delivery_ratio;
   quantize_param* qp_param;
 };
 
@@ -52,6 +54,8 @@ struct decoder_param{
   int** recon_data;
   int num_mb;
   int mb_length;
+  int* roi_flag;
+  double delivery_ratio;
   quantize_param* qp_param;
   //quantize_param qp_param;
 };

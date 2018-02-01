@@ -160,9 +160,9 @@ void get_idct16_hevc(int* dst, int* src, int shift, int line);
 void get_dct32_hevc(int *dst, int *src, uint32_t shift, uint32_t line);
 void get_idct32_hevc(int *dst, int *src, uint32_t shift, uint32_t line);
 
-void get_izigzag_array(int* dst, int* src);
-void get_zigzag_array(int* dst, int* src);
-void set_scan_oder(int* dst, int*src);
-void set_inverse_scan_oder(int* dst, int*src);
+void get_izigzag_array(int* dst, int* src, double delivery_ratio);
+void get_zigzag_array(int* dst, int* src, double delivery_ratio);
+void set_scan_oder(int* dst, int*src, double delivery_ratio);
+void set_inverse_scan_oder(int* dst, int*src, double delivery_ratio);
 
 #endif /* DCT_H_ */

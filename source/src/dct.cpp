@@ -579,10 +579,10 @@ uint32_t SAD(uint8_t *block, uint8_t* block2, uint32_t x, uint32_t y) {
   return sum;
 }
 
-inline void get_izigzag_array(int* dst, int* src) {
+inline void get_izigzag_array(int* dst, int* src, double delivery_ratio) {
   uint32_t width = mb_size;
   uint32_t height = mb_size;
-  double_t mb_size_delivery_ratio = width*height*DELIVERY_RATIO_NON_ROI;
+  double_t mb_size_delivery_ratio = width*height*delivery_ratio;
   uint32_t phase = 0;
   uint32_t count = 0;
 
@@ -663,15 +663,15 @@ inline void get_izigzag_array(int* dst, int* src) {
   }
 }
 
-void set_scan_oder(int* dst, int*src) {
-  get_zigzag_array(dst,src);
+void set_scan_oder(int* dst, int*src, double delivery_ratio) {
+  get_zigzag_array(dst,src, delivery_ratio);
 }
 
-void set_inverse_scan_oder(int* dst, int*src) {
-  get_izigzag_array(dst,src);
+void set_inverse_scan_oder(int* dst, int*src, double delivery_ratio) {
+  get_izigzag_array(dst,src, delivery_ratio);
 }
 
-inline void get_zigzag_array(int* dst, int* src) {
+inline void get_zigzag_array(int* dst, int* src, double delivery_ratio) {
   uint32_t width = mb_size;
   uint32_t height = mb_size;
 
@@ -717,7 +717,7 @@ inline void get_zigzag_array(int* dst, int* src) {
     count += 1;
   }
 
-  int threshold = width * height * DELIVERY_RATIO_NON_ROI;
+  int threshold = width * height * delivery_ratio;
 
   for (int i = width*height - 1; i >= threshold; i--) {
     dst[i] = 0;
