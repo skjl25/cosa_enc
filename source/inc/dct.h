@@ -44,6 +44,10 @@ enum ChannelType {
   MAX_NUM_CHANNEL_TYPE = 2
 };
 
+#define ROUND(a) (((a) < 0 ) ? (int) ((a) - 0.5) : \
+                  (int) ((a) + 0.5))
+
+
 #define DEFINE_DCT4x4_MATRIX(a,b,c) { \
     { a,  a,  a,  a}, \
       { b,  c, -c, -b}, \
@@ -163,6 +167,6 @@ void get_idct32_hevc(int *dst, int *src, uint32_t shift, uint32_t line);
 void get_izigzag_array(int* dst, int* src, double delivery_ratio);
 void get_zigzag_array(int* dst, int* src, double delivery_ratio);
 void set_scan_oder(int* dst, int*src, double delivery_ratio);
-void set_inverse_scan_oder(int* dst, int*src, double delivery_ratio);
+void set_inv_scan_order(int* dst, int*src, double delivery_ratio);
 
 #endif /* DCT_H_ */

@@ -667,7 +667,7 @@ void set_scan_oder(int* dst, int*src, double delivery_ratio) {
   get_zigzag_array(dst,src, delivery_ratio);
 }
 
-void set_inverse_scan_oder(int* dst, int*src, double delivery_ratio) {
+void set_inv_scan_order(int* dst, int*src, double delivery_ratio) {
   get_izigzag_array(dst,src, delivery_ratio);
 }
 

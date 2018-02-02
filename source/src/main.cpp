@@ -35,7 +35,6 @@ DEALINGS IN THE SOFTWARE.
 #pragma warning(disable:4819)
 using namespace std;
 
-#define RUN_INFINITE 1
 void main() {
   Utility util;
   ImageTools image_tool;
@@ -47,20 +46,21 @@ void main() {
   encoder_param enc_param;
   decoder_param dec_param;
   picture_param pic_param;
+  yuv_video yuv_src;
 
   int pic_width = 1920;
   int pic_height = 1080;
   int num_frames = 100;
 
-  int dct_output[max_mb_size *max_mb_size];
-  int zigzag_array[max_mb_size *max_mb_size];
-  int izigzag_array[max_mb_size *max_mb_size];
 
   //--------------------------------------------------------------------------
-  yuv_data src;
-  image_tool.load_yuv_data(&src, input_yuv_name, num_frames, pic_height, pic_width);
-  image_tool.write_yuv_data(&src, output_yuv_name);
+  //Read YUV data
+  image_tool.load_yuv_data(&yuv_src, input_yuv_name, num_frames, pic_height, pic_width);
+  image_tool.write_yuv_data(&yuv_src, output_yuv_name);
+
+
   //--------------------------------------------------------------------------
+  //Read single image
   ipl_org_img = cvLoadImage(input_file_name, 1);
   ipl_org_gray_img = cvCreateImage(cvSize(ipl_org_img->width, ipl_org_img->height), IPL_DEPTH_8U, 1);
   cvCvtColor(ipl_org_img, ipl_org_gray_img, CV_RGB2GRAY);
@@ -72,18 +72,20 @@ void main() {
 #endif
 
   init_encoder(ipl_org_gray_img, &enc_param, &pic_param, mb_size);
-  init_decoder(ipl_org_gray_img, &dec_param, &pic_param, mb_size);
-  set_picture_data(ipl_org_gray_img, &enc_param);
+  init_decoder(&dec_param, &pic_param, mb_size);
+  set_picture_data(ipl_org_gray_img, &enc_param, &pic_param);
 
-#if RUN_INFINITE
-  while (1) {
-#endif
-    util.startTimer();
+  for (int i = 0; i < yuv_src.num_frames; i++) {
+	//------------------------------------------------------------------------
+	util.startTimer();
+	//------------------------------------------------------------------------
 
 	encode_picture(&enc_param);
 
 	//------------------------------------------------------------------------
 #if printf_en
+	int zigzag_array[max_mb_size *max_mb_size];
+
 	for (int k = 0; k < mb_size; k++) {
 		for (int l = 0; l < mb_size; l++) {
 			printf("%d ", zigzag_array[l + k * mb_size]);
@@ -160,8 +162,11 @@ void main() {
 	//------------------------------------------------------------------------
 
 	decode_picture(&dec_param);
-    util.getElapsedTime();
-    recon_picture_data(ipl_rec_img, &dec_param);
+
+	//------------------------------------------------------------------------
+	util.getElapsedTime();
+	//------------------------------------------------------------------------
+	recon_picture_data(ipl_rec_img, &dec_param);
 	
 	double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
                                               (uint8_t*)ipl_org_gray_img->imageData,
@@ -172,10 +177,7 @@ void main() {
 #if SAVE_IMAGE
     cvSaveImage("./output/fdct_result.pgm", ipl_rec_img);
 #endif
-
-#if RUN_INFINITE
   }
-#endif
   getchar();
 
 #if 0

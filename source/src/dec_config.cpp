@@ -99,8 +99,8 @@ void init_decoder_param(picture_param* pic_param, decoder_param* dec_param,
 
 }
 
-void init_decoder(IplImage* src_img, decoder_param* dec_param, 
-                  picture_param* pic_param, int tu_size) {
+void init_decoder(decoder_param* dec_param, picture_param* pic_param, 
+				  int tu_size) {
   init_decoder_param(pic_param, dec_param, tu_size);
 }
 

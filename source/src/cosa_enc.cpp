@@ -33,3 +33,8 @@ void encode_picture(encoder_param* enc_param) {
 		quantize(enc_param->enc_data[i], enc_param, &enc_param->qp_param[i]);
 	}
 }
+
+void set_roi_mb() {
+
+
+}

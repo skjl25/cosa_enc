@@ -26,17 +26,18 @@ DEALINGS IN THE SOFTWARE.
 
 #include "../inc/enc_config.h"
 
-void set_picture_data(IplImage* ipl_src_img, encoder_param* enc_param) {
+void set_picture_data(IplImage* ipl_src_img, encoder_param* enc_param, 
+					  picture_param* pic_param) {
   uint32_t mb_idx = 0;
-  uint32_t src_offset = ipl_src_img->widthStep;
+  uint32_t src_offset = pic_param->org_img_width;
   char* src_img = ipl_src_img->imageData;
 
-  for (int j = 0; j < ipl_src_img->height; j += enc_param->tu_size) {
-    for (int i = 0; i < ipl_src_img->width; i += enc_param->tu_size) {
+  for (int j = 0; j < pic_param->org_img_height; j += enc_param->tu_size) {
+    for (int i = 0; i < pic_param->org_img_width; i += enc_param->tu_size) {
       for (int k = 0; k < enc_param->tu_size; k++) {
         for (int l = 0; l < enc_param->tu_size; l++) {
           enc_param->src_data[mb_idx][k * enc_param->tu_size + l] =
-                                       src_img[(src_offset * (j + k)) + (i + l)];
+                                      src_img[(src_offset * (j + k)) + (i + l)];
         }
       }
       mb_idx++;
@@ -95,8 +96,13 @@ void quantize(int* src, encoder_param* enc_param, quantize_param* qp_param) {
 }
 
 void set_picture_parameter(IplImage* src_img, picture_param* pic_param) {
-  pic_param->org_img_height= src_img->height;
-  pic_param->org_img_width= src_img->width;
+  pic_param->org_img_height = src_img->height;
+  pic_param->org_img_width  = src_img->width;
+}
+
+void set_picture_parameter(yuv_video* src_img, picture_param* pic_param) {
+	pic_param->org_img_height = src_img->height;
+	pic_param->org_img_width = src_img->width;
 }
 
 
@@ -123,7 +129,13 @@ void init_encoder_param(picture_param* pic_param, encoder_param* enc_param,
 
 void init_encoder(IplImage* src_img, encoder_param* enc_param,
                   picture_param* pic_param, int tu_size) {
-  set_picture_parameter(src_img, pic_param);
-  init_encoder_param(pic_param, enc_param, tu_size);
+	set_picture_parameter(src_img, pic_param);
+	init_encoder_param(pic_param, enc_param, tu_size);
+}
+
+void init_encoder(yuv_video* src_img, encoder_param* enc_param,
+				  picture_param* pic_param, int tu_size) {
+	set_picture_parameter(src_img, pic_param);
+	init_encoder_param(pic_param, enc_param, tu_size);
 }
 

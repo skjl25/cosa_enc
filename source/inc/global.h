@@ -42,10 +42,6 @@ DEALINGS IN THE SOFTWARE.
 #include "../../../utility/inc/img_tools.h"
 #include "../../../utility/inc/typedef.h"
 
-
-#define ROUND( a )            ( ( (a) < 0 ) ? (int) ( (a) - 0.5 ) : \
-                      		      (int) ( (a) + 0.5 ) )
-
 #define image_sequence          130
 
 #define input_file_name "./input/1920x1024_test.jpg"

@@ -27,13 +27,12 @@ DEALINGS IN THE SOFTWARE.
 
 int izigzag_array[max_mb_size *max_mb_size];
 
-
 void decode_picture(decoder_param* dec_param) {
 	for (int i = 0; i < dec_param->num_mb; i++) {
 		//Maybe add secondary transformation to place more coefficients to the left top to prevent futher degradation
 		//Utilize 4x4 as a tx for roi
 		dequantize(dec_param->dec_data[i], dec_param->qp_param[i], dec_param->tu_size);
-		set_inverse_scan_oder(izigzag_array, dec_param->dec_data[i], dec_param->delivery_ratio);
+		set_inv_scan_order(izigzag_array, dec_param->dec_data[i], dec_param->delivery_ratio);
 		inv_transform_img(dec_param->recon_data[i], (int*)izigzag_array, dec_param->tu_size);
 	}
 }

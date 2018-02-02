@@ -29,6 +29,7 @@ DEALINGS IN THE SOFTWARE.
 #include "global.h"
 #include "../../../utility/inc/typedef.h"
 #include "../../../utility/inc/utility.h"
+#include "../../../utility/inc/img_tools.h"
 
 #include "dct.h"
 #include "cosa_common.h"
@@ -42,5 +43,11 @@ void quantize(int* src, encoder_param* enc_param, quantize_param* qp_param);
 
 void init_encoder(IplImage* src_img, encoder_param* enc_param,
                   picture_param* pic_param, int tu_size);
+void init_encoder(yuv_video* src_img, encoder_param* enc_param,
+				  picture_param* pic_param, int tu_size);
+void set_picture_data(IplImage* ipl_src_img, encoder_param* enc_param,
+					  picture_param* pic_param);
+
+void set_roi_mb();
 
 #endif /* ENC_CONIFG_H_ */
