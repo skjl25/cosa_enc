@@ -46,10 +46,10 @@ void init_encoder(IplImage* src_img, encoder_param* enc_param,
 void init_encoder(yuv_video* src_img, encoder_param* enc_param,
 				  picture_param* pic_param, int tu_size);
 void set_picture_data(IplImage* ipl_src_img, encoder_param* enc_param,
-					  picture_param* pic_param);
+					  picture_param* pic_param, int pic_cnt);
 
 void set_picture_data(yuv_video* ipl_src_img, encoder_param* enc_param,
-				  	  picture_param* pic_param);
+				  	  picture_param* pic_param, int pic_cnt);
 
 void set_roi_mb();
 

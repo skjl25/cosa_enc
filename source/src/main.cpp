@@ -50,7 +50,7 @@ void main() {
 
   int pic_width = 1920;
   int pic_height = 1080;
-  int num_frames = 100;
+  int num_frames = 600;
 
 
   //--------------------------------------------------------------------------
@@ -73,10 +73,8 @@ void main() {
 
 #if test_yuv
   init_encoder(&yuv_src, &enc_param, &pic_param, mb_size);
-  set_picture_data(&yuv_src, &enc_param, &pic_param);
 #else 
   init_encoder(ipl_org_gray_img, &enc_param, &pic_param, mb_size);
-  set_picture_data(ipl_org_gray_img, &enc_param, &pic_param);
 #endif
 
   init_decoder(&dec_param, &pic_param, mb_size);
@@ -86,6 +84,12 @@ void main() {
 	util.startTimer();
 	//------------------------------------------------------------------------
 
+
+#if test_yuv
+	set_picture_data(&yuv_src, &enc_param, &pic_param, i);
+#else
+	set_picture_data(ipl_org_gray_img, &enc_param, &pic_param, i);
+#endif
 	encode_picture(&enc_param);
 
 	//------------------------------------------------------------------------
@@ -175,10 +179,9 @@ void main() {
 	recon_picture_data(ipl_rec_img, &dec_param);
 #if test_yuv	
 	double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
-                                              (uint8_t*)yuv_src.pYFrame[0],
+                                              (uint8_t*)yuv_src.pYFrame[i],
                                               ipl_org_gray_img->width,
                                               ipl_org_gray_img->height);
-
 #else
 	double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
 											  (uint8_t*)ipl_org_gray_img->imageData,
@@ -188,7 +191,9 @@ void main() {
     printf("PSNR is %f\n", psnr);
 
 #if SAVE_IMAGE
-    cvSaveImage("./output/fdct_result.pgm", ipl_rec_img);
+	char output_file_name[100];
+	sprintf(output_file_name, "./output/yuv/output_%d.pgm", i);
+    cvSaveImage(output_file_name, ipl_rec_img);
 #endif
   }
   getchar();

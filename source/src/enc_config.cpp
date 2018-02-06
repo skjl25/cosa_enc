@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 Utility util;
 
 void set_picture_data(IplImage* ipl_src_img, encoder_param* enc_param, 
-					  picture_param* pic_param) {
+					  picture_param* pic_param, int pic_cnt) {
   uint32_t mb_idx = 0;
   uint32_t src_offset = pic_param->org_img_width;
   char* src_img = ipl_src_img->imageData;
@@ -47,10 +47,10 @@ void set_picture_data(IplImage* ipl_src_img, encoder_param* enc_param,
 }
 
 void set_picture_data(yuv_video* ipl_src_img, encoder_param* enc_param,
-	picture_param* pic_param) {
+	picture_param* pic_param, int pic_cnt) {
 	uint32_t mb_idx = 0;
 	uint32_t src_offset = pic_param->org_img_width;
-	unsigned char* src_img = ipl_src_img->pYFrame[0];
+	unsigned char* src_img = ipl_src_img->pYFrame[pic_cnt];
 
 	for (int j = 0; j < pic_param->org_img_height; j += enc_param->tu_size) {
 		for (int i = 0; i < pic_param->org_img_width; i += enc_param->tu_size) {
