@@ -29,6 +29,8 @@ DEALINGS IN THE SOFTWARE.
 
 #include "global.h"
 #include "../../../utility/inc/typedef.h"
+#include "../../../utility/inc/utility.h"
+#include "../../../utility/inc/img_tools.h"
 
 struct quantize_param{
   double_t reduce_ratio;

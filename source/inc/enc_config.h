@@ -27,10 +27,6 @@ DEALINGS IN THE SOFTWARE.
 #define ENC_CONIFG_H_
 
 #include "global.h"
-#include "../../../utility/inc/typedef.h"
-#include "../../../utility/inc/utility.h"
-#include "../../../utility/inc/img_tools.h"
-
 #include "dct.h"
 #include "cosa_common.h"
 

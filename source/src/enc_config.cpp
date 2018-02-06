@@ -139,12 +139,8 @@ void init_encoder_param(picture_param* pic_param, encoder_param* enc_param,
                                                 enc_param->mb_length);
   enc_param->enc_data = util.memset2DArray<int>(enc_param->num_mb,
 									        	enc_param->tu_size*enc_param->tu_size);
-  enc_param->qp_param = util.memset1DArray<quantize_param>(enc_param->num_mb);
+  enc_param->qp_param = (quantize_param*)calloc(enc_param->num_mb, sizeof(quantize_param));
   enc_param->delivery_ratio = DELIVERY_RATIO_NON_ROI;
-
-  for (int i = 0; i < enc_param->num_mb; i++) {
-	  init_qp_param(&enc_param->qp_param[i]);
-  }
 }
 
 void init_encoder(IplImage* src_img, encoder_param* enc_param,

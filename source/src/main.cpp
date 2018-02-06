@@ -56,7 +56,7 @@ void main() {
   //--------------------------------------------------------------------------
   //Read YUV data
   image_tool.load_yuv_data(&yuv_src, input_yuv_name, num_frames, pic_height, pic_width);
-  image_tool.write_yuv_data(&yuv_src, output_yuv_name);
+  //image_tool.write_yuv_data(&yuv_src, output_yuv_name);
 
 
   //--------------------------------------------------------------------------
@@ -64,7 +64,6 @@ void main() {
   ipl_org_img = cvLoadImage(input_file_name, 1);
   ipl_org_gray_img = cvCreateImage(cvSize(ipl_org_img->width, ipl_org_img->height), IPL_DEPTH_8U, 1);
   cvCvtColor(ipl_org_img, ipl_org_gray_img, CV_RGB2GRAY);
-  ipl_rec_img = cvCreateImage(cvSize(ipl_org_img->width, ipl_org_img->height), IPL_DEPTH_8U, 1);
   //--------------------------------------------------------------------------
 
 #if SAVE_IMAGE
@@ -72,8 +71,10 @@ void main() {
 #endif
 
 #if test_yuv
+  ipl_rec_img = cvCreateImage(cvSize(yuv_src.width, yuv_src.height), IPL_DEPTH_8U, 1);
   init_encoder(&yuv_src, &enc_param, &pic_param, mb_size);
 #else 
+  ipl_rec_img = cvCreateImage(cvSize(ipl_org_gray_img->width, ipl_org_gray_img->height), IPL_DEPTH_8U, 1);
   init_encoder(ipl_org_gray_img, &enc_param, &pic_param, mb_size);
 #endif
 
@@ -180,8 +181,8 @@ void main() {
 #if test_yuv	
 	double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
                                               (uint8_t*)yuv_src.pYFrame[i],
-                                              ipl_org_gray_img->width,
-                                              ipl_org_gray_img->height);
+											  ipl_rec_img->width,
+	  										  ipl_rec_img->height);
 #else
 	double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
 											  (uint8_t*)ipl_org_gray_img->imageData,
