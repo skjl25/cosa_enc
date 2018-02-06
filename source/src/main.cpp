@@ -71,9 +71,15 @@ void main() {
   cvSaveImage(output_org_file_name, ipl_org_gray_img);
 #endif
 
+#if test_yuv
+  init_encoder(&yuv_src, &enc_param, &pic_param, mb_size);
+  set_picture_data(&yuv_src, &enc_param, &pic_param);
+#else 
   init_encoder(ipl_org_gray_img, &enc_param, &pic_param, mb_size);
-  init_decoder(&dec_param, &pic_param, mb_size);
   set_picture_data(ipl_org_gray_img, &enc_param, &pic_param);
+#endif
+
+  init_decoder(&dec_param, &pic_param, mb_size);
 
   for (int i = 0; i < yuv_src.num_frames; i++) {
 	//------------------------------------------------------------------------
@@ -167,11 +173,18 @@ void main() {
 	util.getElapsedTime();
 	//------------------------------------------------------------------------
 	recon_picture_data(ipl_rec_img, &dec_param);
-	
+#if test_yuv	
 	double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
-                                              (uint8_t*)ipl_org_gray_img->imageData,
+                                              (uint8_t*)yuv_src.pYFrame[0],
                                               ipl_org_gray_img->width,
                                               ipl_org_gray_img->height);
+
+#else
+	double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
+											  (uint8_t*)ipl_org_gray_img->imageData,
+											  ipl_org_gray_img->width,
+											  ipl_org_gray_img->height);
+#endif
     printf("PSNR is %f\n", psnr);
 
 #if SAVE_IMAGE

@@ -25,6 +25,7 @@ DEALINGS IN THE SOFTWARE.
 */
 
 #include "../inc/enc_config.h"
+Utility util;
 
 void set_picture_data(IplImage* ipl_src_img, encoder_param* enc_param, 
 					  picture_param* pic_param) {
@@ -44,6 +45,26 @@ void set_picture_data(IplImage* ipl_src_img, encoder_param* enc_param,
     }
   }
 }
+
+void set_picture_data(yuv_video* ipl_src_img, encoder_param* enc_param,
+	picture_param* pic_param) {
+	uint32_t mb_idx = 0;
+	uint32_t src_offset = pic_param->org_img_width;
+	unsigned char* src_img = ipl_src_img->pYFrame[0];
+
+	for (int j = 0; j < pic_param->org_img_height; j += enc_param->tu_size) {
+		for (int i = 0; i < pic_param->org_img_width; i += enc_param->tu_size) {
+			for (int k = 0; k < enc_param->tu_size; k++) {
+				for (int l = 0; l < enc_param->tu_size; l++) {
+					enc_param->src_data[mb_idx][k * enc_param->tu_size + l] =
+						src_img[(src_offset * (j + k)) + (i + l)];
+				}
+			}
+			mb_idx++;
+		}
+	}
+}
+
 
 void transform_img(int* dst, int* src, int tu_size) {
   //int* coef = (int*)malloc(sizeof(int) * mb_size * mb_size);
@@ -108,7 +129,6 @@ void set_picture_parameter(yuv_video* src_img, picture_param* pic_param) {
 
 void init_encoder_param(picture_param* pic_param, encoder_param* enc_param,
                         int tu_size) {
-  Utility util;
   enc_param->blk_size = 0;
   enc_param->tu_size = tu_size;
   enc_param->num_mb = (pic_param->org_img_height / tu_size)*

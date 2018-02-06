@@ -43,7 +43,7 @@ DEALINGS IN THE SOFTWARE.
 #include "../../../utility/inc/typedef.h"
 
 #define image_sequence          130
-
+#define test_yuv                1
 #define input_file_name "./input/1920x1024_test.jpg"
 #define input_yuv_name "./yuv/Beauty_1920x1080_120fps_420_8bit_YUV.yuv"
 

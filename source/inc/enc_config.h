@@ -48,6 +48,9 @@ void init_encoder(yuv_video* src_img, encoder_param* enc_param,
 void set_picture_data(IplImage* ipl_src_img, encoder_param* enc_param,
 					  picture_param* pic_param);
 
+void set_picture_data(yuv_video* ipl_src_img, encoder_param* enc_param,
+				  	  picture_param* pic_param);
+
 void set_roi_mb();
 
 #endif /* ENC_CONIFG_H_ */
