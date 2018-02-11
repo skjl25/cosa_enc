@@ -27,8 +27,8 @@ DEALINGS IN THE SOFTWARE.
 #include "../inc/enc_config.h"
 Utility util;
 
-void set_picture_data(IplImage* ipl_src_img, encoder_param* enc_param, 
-					  picture_param* pic_param, int pic_cnt) {
+void set_picture_data(IplImage* ipl_src_img, encoder_param* enc_param,
+                      picture_param* pic_param, int pic_cnt) {
   uint32_t mb_idx = 0;
   uint32_t src_offset = pic_param->org_img_width;
   char* src_img = ipl_src_img->imageData;
@@ -47,22 +47,22 @@ void set_picture_data(IplImage* ipl_src_img, encoder_param* enc_param,
 }
 
 void set_picture_data(yuv_video* ipl_src_img, encoder_param* enc_param,
-	picture_param* pic_param, int pic_cnt) {
-	uint32_t mb_idx = 0;
-	uint32_t src_offset = pic_param->org_img_width;
-	unsigned char* src_img = ipl_src_img->pYFrame[pic_cnt];
+    picture_param* pic_param, int pic_cnt) {
+    uint32_t mb_idx = 0;
+    uint32_t src_offset = pic_param->org_img_width;
+    unsigned char* src_img = ipl_src_img->pYFrame[pic_cnt];
 
-	for (int j = 0; j < pic_param->org_img_height; j += enc_param->tu_size) {
-		for (int i = 0; i < pic_param->org_img_width; i += enc_param->tu_size) {
-			for (int k = 0; k < enc_param->tu_size; k++) {
-				for (int l = 0; l < enc_param->tu_size; l++) {
-					enc_param->src_data[mb_idx][k * enc_param->tu_size + l] =
-						src_img[(src_offset * (j + k)) + (i + l)];
-				}
-			}
-			mb_idx++;
-		}
-	}
+    for (int j = 0; j < pic_param->org_img_height; j += enc_param->tu_size) {
+        for (int i = 0; i < pic_param->org_img_width; i += enc_param->tu_size) {
+            for (int k = 0; k < enc_param->tu_size; k++) {
+                for (int l = 0; l < enc_param->tu_size; l++) {
+                    enc_param->src_data[mb_idx][k * enc_param->tu_size + l] =
+                        src_img[(src_offset * (j + k)) + (i + l)];
+                }
+            }
+            mb_idx++;
+        }
+    }
 }
 
 
@@ -122,8 +122,8 @@ void set_picture_parameter(IplImage* src_img, picture_param* pic_param) {
 }
 
 void set_picture_parameter(yuv_video* src_img, picture_param* pic_param) {
-	pic_param->org_img_height = src_img->height;
-	pic_param->org_img_width = src_img->width;
+    pic_param->org_img_height = src_img->height;
+    pic_param->org_img_width = src_img->width;
 }
 
 
@@ -138,20 +138,20 @@ void init_encoder_param(picture_param* pic_param, encoder_param* enc_param,
   enc_param->src_data = util.memset2DArray<int>(enc_param->num_mb,
                                                 enc_param->mb_length);
   enc_param->enc_data = util.memset2DArray<int>(enc_param->num_mb,
-									        	enc_param->tu_size*enc_param->tu_size);
+                                                enc_param->tu_size*enc_param->tu_size);
   enc_param->qp_param = (quantize_param*)calloc(enc_param->num_mb, sizeof(quantize_param));
   enc_param->delivery_ratio = DELIVERY_RATIO_NON_ROI;
 }
 
 void init_encoder(IplImage* src_img, encoder_param* enc_param,
                   picture_param* pic_param, int tu_size) {
-	set_picture_parameter(src_img, pic_param);
-	init_encoder_param(pic_param, enc_param, tu_size);
+    set_picture_parameter(src_img, pic_param);
+    init_encoder_param(pic_param, enc_param, tu_size);
 }
 
 void init_encoder(yuv_video* src_img, encoder_param* enc_param,
-				  picture_param* pic_param, int tu_size) {
-	set_picture_parameter(src_img, pic_param);
-	init_encoder_param(pic_param, enc_param, tu_size);
+                  picture_param* pic_param, int tu_size) {
+    set_picture_parameter(src_img, pic_param);
+    init_encoder_param(pic_param, enc_param, tu_size);
 }
 

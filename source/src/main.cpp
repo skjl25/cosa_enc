@@ -73,7 +73,7 @@ void main() {
 #if test_yuv
   ipl_rec_img = cvCreateImage(cvSize(yuv_src.width, yuv_src.height), IPL_DEPTH_8U, 1);
   init_encoder(&yuv_src, &enc_param, &pic_param, mb_size);
-#else 
+#else
   ipl_rec_img = cvCreateImage(cvSize(ipl_org_gray_img->width, ipl_org_gray_img->height), IPL_DEPTH_8U, 1);
   init_encoder(ipl_org_gray_img, &enc_param, &pic_param, mb_size);
 #endif
@@ -81,119 +81,119 @@ void main() {
   init_decoder(&dec_param, &pic_param, mb_size);
 
   for (int i = 0; i < yuv_src.num_frames; i++) {
-	//------------------------------------------------------------------------
-	util.startTimer();
-	//------------------------------------------------------------------------
+    //------------------------------------------------------------------------
+    util.startTimer();
+    //------------------------------------------------------------------------
 
 
 #if test_yuv
-	set_picture_data(&yuv_src, &enc_param, &pic_param, i);
+    set_picture_data(&yuv_src, &enc_param, &pic_param, i);
 #else
-	set_picture_data(ipl_org_gray_img, &enc_param, &pic_param, i);
+    set_picture_data(ipl_org_gray_img, &enc_param, &pic_param, i);
 #endif
-	encode_picture(&enc_param);
+    encode_picture(&enc_param);
 
-	//------------------------------------------------------------------------
+    //------------------------------------------------------------------------
 #if printf_en
-	int zigzag_array[max_mb_size *max_mb_size];
+    int zigzag_array[max_mb_size *max_mb_size];
 
-	for (int k = 0; k < mb_size; k++) {
-		for (int l = 0; l < mb_size; l++) {
-			printf("%d ", zigzag_array[l + k * mb_size]);
-		}
-		printf("\n");
-	}
-	printf("---------------------\n");
+    for (int k = 0; k < mb_size; k++) {
+        for (int l = 0; l < mb_size; l++) {
+            printf("%d ", zigzag_array[l + k * mb_size]);
+        }
+        printf("\n");
+    }
+    printf("---------------------\n");
 
 
-	int cnt_freq_coef_array[max_mb_size *max_mb_size];
-	int cnt_freq_coef_array_temp[max_mb_size *max_mb_size];
-	int max_coef = 0;
-	int max_coef_idx = 0;
-	int most_freq_coef = 0;
+    int cnt_freq_coef_array[max_mb_size *max_mb_size];
+    int cnt_freq_coef_array_temp[max_mb_size *max_mb_size];
+    int max_coef = 0;
+    int max_coef_idx = 0;
+    int most_freq_coef = 0;
 
-	for (int j = 0; j < mb_size*mb_size; j++) {
-		cnt_freq_coef_array[j] = zigzag_array[j];
-		cnt_freq_coef_array_temp[j] = 0;
-		max_coef = 0;
-	}
+    for (int j = 0; j < mb_size*mb_size; j++) {
+        cnt_freq_coef_array[j] = zigzag_array[j];
+        cnt_freq_coef_array_temp[j] = 0;
+        max_coef = 0;
+    }
 
-	max_coef = 0;
-	for (int j = 0; j < mb_size*mb_size; j++) {
-		if (cnt_freq_coef_array[j] < 255) {
-			for (int k = j + 1; k < mb_size*mb_size; k++) {
-				if (cnt_freq_coef_array[j] == cnt_freq_coef_array[k]) {
-					cnt_freq_coef_array[k] = 1000;
-					cnt_freq_coef_array_temp[j] = cnt_freq_coef_array_temp[j] + 1;
-				}
-			}
-			if (max_coef < cnt_freq_coef_array_temp[j]) {
-				max_coef = cnt_freq_coef_array_temp[j];
-				max_coef_idx = j;
-			}
-		}
-	}
+    max_coef = 0;
+    for (int j = 0; j < mb_size*mb_size; j++) {
+        if (cnt_freq_coef_array[j] < 255) {
+            for (int k = j + 1; k < mb_size*mb_size; k++) {
+                if (cnt_freq_coef_array[j] == cnt_freq_coef_array[k]) {
+                    cnt_freq_coef_array[k] = 1000;
+                    cnt_freq_coef_array_temp[j] = cnt_freq_coef_array_temp[j] + 1;
+                }
+            }
+            if (max_coef < cnt_freq_coef_array_temp[j]) {
+                max_coef = cnt_freq_coef_array_temp[j];
+                max_coef_idx = j;
+            }
+        }
+    }
 
-	most_freq_coef = zigzag_array[max_coef_idx];
+    most_freq_coef = zigzag_array[max_coef_idx];
 
-	for (int k = 0; k < mb_size; k++) {
-		for (int l = 0; l < mb_size; l++) {
-			printf("%d ", cnt_freq_coef_array[l + k * mb_size]);
-		}
-		printf("\n");
-	}
-	printf("---------------------\n");
+    for (int k = 0; k < mb_size; k++) {
+        for (int l = 0; l < mb_size; l++) {
+            printf("%d ", cnt_freq_coef_array[l + k * mb_size]);
+        }
+        printf("\n");
+    }
+    printf("---------------------\n");
 
-	for (int k = 0; k < mb_size; k++) {
-		for (int l = 0; l < mb_size; l++) {
-			printf("%d ", cnt_freq_coef_array_temp[l + k * mb_size]);
-		}
-		printf("\n");
-	}
-	printf("most frequent coef : %d\n", zigzag_array[max_coef_idx]);
-	getchar();
+    for (int k = 0; k < mb_size; k++) {
+        for (int l = 0; l < mb_size; l++) {
+            printf("%d ", cnt_freq_coef_array_temp[l + k * mb_size]);
+        }
+        printf("\n");
+    }
+    printf("most frequent coef : %d\n", zigzag_array[max_coef_idx]);
+    getchar();
 
-	for (int k = 0; k < mb_size; k++) {
-		for (int l = 0; l < mb_size; l++) {
-			printf("%d ", zigzag_array[l + k * mb_size] - most_freq_coef);
-		}
-		printf("\n");
-	}
-	getchar();
+    for (int k = 0; k < mb_size; k++) {
+        for (int l = 0; l < mb_size; l++) {
+            printf("%d ", zigzag_array[l + k * mb_size] - most_freq_coef);
+        }
+        printf("\n");
+    }
+    getchar();
 #endif
-	//------------------------------------------------------------------------
+    //------------------------------------------------------------------------
 
-	//------------------------------------------------------------------------
-	//Pointing dec_param to enc_param
-	dec_param.dec_data = enc_param.enc_data;
-	dec_param.qp_param = enc_param.qp_param;
-	dec_param.num_mb = enc_param.num_mb;
-	dec_param.roi_flag = enc_param.roi_flag;
-	dec_param.delivery_ratio = enc_param.delivery_ratio;
-	//------------------------------------------------------------------------
+    //------------------------------------------------------------------------
+    //Pointing dec_param to enc_param
+    dec_param.dec_data = enc_param.enc_data;
+    dec_param.qp_param = enc_param.qp_param;
+    dec_param.num_mb = enc_param.num_mb;
+    dec_param.roi_flag = enc_param.roi_flag;
+    dec_param.delivery_ratio = enc_param.delivery_ratio;
+    //------------------------------------------------------------------------
 
-	decode_picture(&dec_param);
+    decode_picture(&dec_param);
 
-	//------------------------------------------------------------------------
-	util.getElapsedTime();
-	//------------------------------------------------------------------------
-	recon_picture_data(ipl_rec_img, &dec_param);
-#if test_yuv	
-	double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
+    //------------------------------------------------------------------------
+    util.getElapsedTime();
+    //------------------------------------------------------------------------
+    recon_picture_data(ipl_rec_img, &dec_param);
+#if test_yuv
+    double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
                                               (uint8_t*)yuv_src.pYFrame[i],
-											  ipl_rec_img->width,
-	  										  ipl_rec_img->height);
+                                              ipl_rec_img->width,
+                                              ipl_rec_img->height);
 #else
-	double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
-											  (uint8_t*)ipl_org_gray_img->imageData,
-											  ipl_org_gray_img->width,
-											  ipl_org_gray_img->height);
+    double_t psnr = image_tool.get_image_psnr((uint8_t*)ipl_rec_img->imageData,
+                                              (uint8_t*)ipl_org_gray_img->imageData,
+                                              ipl_org_gray_img->width,
+                                              ipl_org_gray_img->height);
 #endif
     printf("PSNR is %f\n", psnr);
 
 #if SAVE_IMAGE
-	char output_file_name[100];
-	sprintf(output_file_name, "./output/yuv/output_%d.pgm", i);
+    char output_file_name[100];
+    sprintf(output_file_name, "./output/yuv/output_%d.pgm", i);
     cvSaveImage(output_file_name, ipl_rec_img);
 #endif
   }
